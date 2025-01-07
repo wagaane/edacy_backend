@@ -1,4 +1,4 @@
-package sn.ods.starterkit_spring.application.usecase.services.implement.file;
+package sn.ods.starterkit_spring.application.usecase.services.shared.file;
 
 
 import jakarta.annotation.PostConstruct;
@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import sn.ods.starterkit_spring.domain.enums.FileCode;
 import sn.ods.starterkit_spring.application.usecase.services.interfaces.file.IFile;
+import sn.ods.starterkit_spring.domain.model.file.File;
 import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.presentation.dto.responses.APIMessage;
 import sn.ods.starterkit_spring.presentation.dto.responses.FileRspDTO;
@@ -105,12 +106,16 @@ public class FileService implements IFile {
 
 
 
-            result = FileRspDTO.builder()
+
+
+       result = FileRspDTO.builder()
                     .originalName(fileName)
                     .fileType(file.getContentType())
                     .fileSize(file.getSize())
                     .fileCode( RandomStringUtils.randomAlphanumeric(8))
                     .build();
+
+
 
             if (org.apache.commons.lang3.StringUtils.isNotBlank(directory)) {
                 Path subDirPath = root.resolve(directory);
