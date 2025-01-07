@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 @Entity
-@SequenceGenerator(name = "seq_file", initialValue = 100, allocationSize = 2, sequenceName = "seq_file")
+//@SequenceGenerator(name = "seq_file", initialValue = 100, allocationSize = 2, sequenceName = "seq_file")
 @Table(name = "TD_FILE")
 public class File {
 

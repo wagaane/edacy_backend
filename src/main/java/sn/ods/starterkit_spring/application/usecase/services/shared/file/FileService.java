@@ -1,4 +1,4 @@
-package sn.ods.starterkit_spring.application.usecase.services.implement.file;
+package sn.ods.starterkit_spring.application.usecase.services.shared.file;
 
 
 import jakarta.annotation.PostConstruct;
@@ -72,7 +72,7 @@ public class FileService implements IFile {
             }
 
             if (checkRegexSplitter) {
-                List<String> stringList = Arrays.stream(fileName.split(regexSplitter)).collect(Collectors.toList());
+                List<String> stringList = Arrays.stream(fileName.split(regexSplitter)).toList();
 
                 if (stringList.size() != 2)
                     throw new APIException(APIMessage.FILE_FORMAT_INCORRECT, String.format("The format (%s) of the attachments files is incorrect!", fileName));
