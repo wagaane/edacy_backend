@@ -7,8 +7,7 @@ import org.hibernate.Hibernate;
 import java.util.Objects;
 
 
-@Getter
-@Setter
+@Data
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
