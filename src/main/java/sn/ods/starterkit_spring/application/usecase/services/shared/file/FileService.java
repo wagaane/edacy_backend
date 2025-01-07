@@ -1,4 +1,4 @@
-package sn.ods.starterkit_spring.domain.services.implement.file;
+package sn.ods.starterkit_spring.application.usecase.services.implement.file;
 
 
 import jakarta.annotation.PostConstruct;
@@ -15,7 +15,7 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import sn.ods.starterkit_spring.domain.enums.FileCode;
-import sn.ods.starterkit_spring.domain.services.interfaces.file.IFile;
+import sn.ods.starterkit_spring.application.usecase.services.interfaces.file.IFile;
 import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.presentation.dto.responses.APIMessage;
 import sn.ods.starterkit_spring.presentation.dto.responses.FileRspDTO;
