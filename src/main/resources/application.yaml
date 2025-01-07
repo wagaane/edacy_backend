@@ -1,0 +1,44 @@
+spring:
+  profiles:
+    active: dev
+
+  test:
+    database:
+      replace: none
+  servlet:
+    multipart:
+      max-file-size: 50000MB
+      max-request-size: 50000MB
+
+
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+
+projet:
+  securite:
+    jwtSecret: 2b44b0b00fd822d8ce753e54dac3dc4e06c2725f7db930f3b9924468b53194dbccdbe23d7baa5ef5fbc414ca4b2e64700bad60c5a7c45eaba56880985582fba4
+    jwtExpiration: 86400000 # a day  avant 30
+    jwtRefreshToken: 604800000 # 7 days avant 300
+
+
+upload:
+  path: /Users/g2k-fs-akcissokho/Documents/docs/
+  image: /Users/g2k-fs-akcissokho/Documents/docs/
+
+
+smtp:
+  server:
+    host: "smtp.gmail.com"
+    from: "cissokho.karim.abdou@gmail.com"
+    password: "zfsd kdsr ugte vrrn"
+
+app:
+  file:
+    regex-splitter: '@##___@##'
