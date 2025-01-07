@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,18 @@ public class FileRspDTO {
                 .fileType(dto.fileType)
                 .generatedName(dto.generatedName)
                 .fileSize(dto.fileSize )
+                .build();
+    }
+
+    public static FileRspDTO toDto(File entity){
+        return    FileRspDTO.builder()
+                .id(entity.getId())
+                .originalName(entity.getOriginalName())
+                .fileCode(entity.getFileCode())
+                .downloadUrl(entity.getDownloadUrl())
+                .fileType(entity.getFileType())
+                .generatedName(entity.getGeneratedName())
+                .fileSize(entity.getFileSize() )
                 .build();
     }
 
