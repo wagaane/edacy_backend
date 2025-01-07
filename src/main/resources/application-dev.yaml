@@ -1,0 +1,40 @@
+server:
+  error:
+    include-message: always
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/db_startkit?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
+    username: postgres
+    password: P@ssword123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 0
+      maximum-pool-size: 40
+      pool-name: hikariPool
+      max-lifetime: 9000
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: create-drop
+    #   properties:
+    #      hibernate:
+    #         format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    #username: celluleinformatique-fpt@gmail.com
+    username: cissokho.karim.abdou@gmail.com
+    password: zfsd kdsr ugte vrrn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    protocol: smtp
