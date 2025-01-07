@@ -12,11 +12,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author Abdou Karim CISSOKHO
- * @created 13/01/2024-22:44
- * @project mfpai-backend
- */
+
 @MapperConfig
 public interface EntityMapper<E, DRQ, DRP> {
     DRP toDto(E entity);
