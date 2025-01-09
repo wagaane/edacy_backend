@@ -6,7 +6,7 @@ package sn.ods.starterkit_spring.domain.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
-import sn.ods.starterkit_spring.domain.model.Profile;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Profile;
 
 
 import java.util.List;

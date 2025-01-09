@@ -5,7 +5,7 @@ import org.mapstruct.Named;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import sn.ods.starterkit_spring.domain.model.Utilisateur;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.UtilisateurReqDTO;
 import sn.ods.starterkit_spring.presentation.dto.responses.utilisateur.UtilisateurResDTO;
 import sn.ods.starterkit_spring.presentation.mappers.EntityMapper;

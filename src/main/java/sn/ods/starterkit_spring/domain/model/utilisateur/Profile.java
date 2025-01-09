@@ -1,11 +1,8 @@
-package sn.ods.starterkit_spring.domain.model;
+package sn.ods.starterkit_spring.domain.model.utilisateur;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author G2k R&D
