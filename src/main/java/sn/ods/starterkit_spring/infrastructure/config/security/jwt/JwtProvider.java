@@ -4,7 +4,6 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import sn.ods.starterkit_spring.infrastructure.config.security.services.UtilisateurPrinciple;
 import sn.ods.starterkit_spring.presentation.dto.responses.mails.MailConnexionInfosDTO;
@@ -28,7 +27,7 @@ public class JwtProvider {
 
     private static final  String INFOS= "infos";
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(String authentication) {
         UtilisateurPrinciple utilisateurPrinciple = (UtilisateurPrinciple) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(utilisateurPrinciple.getUsername())
