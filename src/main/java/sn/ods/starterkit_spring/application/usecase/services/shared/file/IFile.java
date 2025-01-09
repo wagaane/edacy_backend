@@ -1,4 +1,4 @@
-package sn.ods.starterkit_spring.application.usecase.services.interfaces.file;
+package sn.ods.starterkit_spring.application.usecase.services.shared.file;
 
 
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package sn.ods.starterkit_spring.presentation.web.file;
+package sn.ods.starterkit_spring.presentation.web.shared.file;
 
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import sn.ods.starterkit_spring.application.usecase.services.interfaces.file.IFile;
+import sn.ods.starterkit_spring.application.usecase.services.shared.file.IFile;
 import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.presentation.dto.responses.APIResponse;
 import sn.ods.starterkit_spring.presentation.dto.responses.FileRspDTO;
