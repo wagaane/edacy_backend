@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import sn.ods.starterkit_spring.domain.model.Utilisateur;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 import sn.ods.starterkit_spring.domain.repository.IUtilisateurRepository;
 import sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nTranslate;
 

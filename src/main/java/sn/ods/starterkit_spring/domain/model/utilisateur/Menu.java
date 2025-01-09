@@ -1,5 +1,5 @@
 
-package sn.ods.starterkit_spring.domain.model;
+package sn.ods.starterkit_spring.domain.model.utilisateur;
 
 import jakarta.persistence.*;
 import lombok.*;

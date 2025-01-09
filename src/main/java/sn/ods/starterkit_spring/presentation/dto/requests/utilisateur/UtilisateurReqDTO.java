@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sn.ods.starterkit_spring.domain.model.Profile;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Profile;
 
 import java.time.LocalDate;
 import java.util.Set;

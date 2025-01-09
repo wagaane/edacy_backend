@@ -3,7 +3,7 @@ package sn.ods.starterkit_spring.domain.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import sn.ods.starterkit_spring.domain.model.Utilisateur;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 
 
 import java.util.List;
