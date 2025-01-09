@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import sn.ods.starterkit_spring.domain.model.Utilisateur;
-import sn.ods.starterkit_spring.presentation.dto.requests.MenuDTO;
+import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.MenuDTO;
 import sn.ods.starterkit_spring.presentation.dto.responses.authentication.UtilisateurInfo;
 
 
@@ -53,9 +53,10 @@ public class UtilisateurPrinciple implements UserDetails {
 
       //  Set<MenuDTO> menus = new HashSet<>();
         if (Objects.nonNull(user.
-                getProfils()) && !user.getProfils().isEmpty()) {
+                getProfiles())) {
 
-            authorities = user.getProfils().stream()
+
+            authorities = user.getProfiles().stream()
 
 
                     .map(permission ->
@@ -76,7 +77,7 @@ public class UtilisateurPrinciple implements UserDetails {
         //Set<MenuDTO> menus = AuthUtils.getMenusOfUtilisateur(menuOptional.get());
 
 
-        UtilisateurInfo utilisateurInfo = new UtilisateurInfo(user.getId(), user.getEmail(), user.getPrenom(), user.getNom() ,user.getProfils(),user.getStatus());
+        UtilisateurInfo utilisateurInfo = new UtilisateurInfo(user.getId(), user.getEmail(), user.getPrenom(), user.getNom() ,user.getProfiles(),user.getStatus());
         return UtilisateurPrinciple.builder()
                 .utilisateurInfo(utilisateurInfo)
                 .password(user.getPassword())
