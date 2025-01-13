@@ -28,25 +28,25 @@ public  class Utilisateur extends Auditable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
     @Column(nullable = false, updatable = false, unique = true)
-    protected Long id;
+    private Long id;
 
     @Size(max = 50)
     @Column(name = "user_firstName")
-    protected String prenom;
+    private String prenom;
 
     @Size(max = 25)
     @Column(name = "user_lastName", nullable = false)
-    protected String nom;
+    private String nom;
 
     @Size(max = 200)
     @Column(name = "user_pmail")
-    protected String email;
+    private String email;
 
 
     @Column(name = "user_password")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     // ignoring password à revoir
-    protected String password;
+    private String password;
 
 
 
@@ -54,32 +54,31 @@ public  class Utilisateur extends Auditable<Long> {
     private Boolean firstLog = true;
 
     @Column(name = "user_status", columnDefinition = "boolean default true")
-    protected Boolean status;
+    private Boolean status;
 
 
     @Size(max = 20)
     @Column(name = "user_phoneNumber")
-    protected String telephone;
+    private String telephone;
 
     @Size(max = 150)
     @Column(name = "user_adresse")
-    protected String adresse;
+    private String adresse;
 
     @Size(max = 10)
     @Column(name = "user_sexe")
-    protected String sexe;
+    private String sexe;
 
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "TR_USER_PROFILE", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "profile_id"))
-    protected Set<Profile> profils = new HashSet<>();
+    @OneToMany
+    @JoinColumn(name = "profile")
+    private Set<Profile> profiles = new HashSet<>();
 
     @Size(max = 100)
     @Column(name = "user_lieu_naissance")
-    protected String lieuDeNaissance;
+    private String lieuDeNaissance;
 
     @Column(name = "user_date_naissance")
-    protected LocalDate dateNaissance;
+    private LocalDate dateNaissance;
 
 
 }

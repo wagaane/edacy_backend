@@ -15,12 +15,9 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import sn.ods.starterkit_spring.domain.enums.FileCode;
-import sn.ods.starterkit_spring.application.usecase.services.interfaces.file.IFile;
-import sn.ods.starterkit_spring.domain.model.file.File;
 import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.presentation.dto.responses.APIMessage;
 import sn.ods.starterkit_spring.presentation.dto.responses.FileRspDTO;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -31,12 +28,6 @@ import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
-/**
- * @author Abdou Karim CISSOKHO
- * @created 08/11/2023-16:22
- * @project gestion_courriers
- */
 
 
 @Service
@@ -94,8 +85,6 @@ public class FileService implements IFile {
           /*  if (file.getBytes().length > (1024 * 1024)) {
                 throw new APIException(APIMessage.FILE_FORMAT_INCORRECT, "File size exceeds maximum limit");
             }
-
-
            */
             String extension = FilenameUtils.getExtension(fileName);
             InputStream is = file.getInputStream();

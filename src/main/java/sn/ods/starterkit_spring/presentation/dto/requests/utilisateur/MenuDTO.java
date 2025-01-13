@@ -1,4 +1,4 @@
-package sn.ods.starterkit_spring.presentation.dto.requests;
+package sn.ods.starterkit_spring.presentation.dto.requests.utilisateur;
 
 
 
