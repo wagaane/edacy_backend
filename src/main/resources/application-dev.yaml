@@ -44,5 +44,3 @@ logging:
     root: INFO
     sn:
       ods: DEBUG
-  file:
-    name: logs/application.log
