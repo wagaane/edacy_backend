@@ -23,7 +23,7 @@ public class UserService implements IUserService {
     private Map<String, String> resetTokens = new HashMap<>();
     private Map<String, Boolean> invalidatedTokens = new HashMap<>();
 
-    @Value("${frontend.reset-password-url}")
+    //@Value("${frontend.reset-password-url}")
     private String resetUrl;
 
     @Autowired

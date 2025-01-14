@@ -1,5 +1,6 @@
 package sn.ods.starterkit_spring.infrastructure.account;
 
+import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class AccountController {
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        String token = jwtProvider.generateToken(request.getEmail());
+        String token = jwtProvider.generateToken( request.getEmail());
         return ResponseEntity.ok(new AuthResponse(token));
     }
 

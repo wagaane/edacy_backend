@@ -1,3 +1,6 @@
+server:
+  port: 8085
+
 spring:
   profiles:
     active: dev
@@ -29,8 +32,8 @@ projet:
 
 
 upload:
-  path: /Users/g2k-fs-akcissokho/Documents/docs/
-  image: /Users/g2k-fs-akcissokho/Documents/docs/
+  path: /Users/g2k-fs-icoulibaly/Desktop/ODS/starter-kit/docs/
+  image: /Users/g2k-fs-icoulibaly/Desktop/ODS/starter-kit/docs/
 
 
 smtp:

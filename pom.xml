@@ -188,6 +188,12 @@
 			<classifier>jakarta</classifier>
 			<version>${com.querydsl.version}</version>
 		</dependency>
+
+		<!-- Spring Boot Starter pour les logs (optionnel, car Spring Boot utilise Logback par défaut) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

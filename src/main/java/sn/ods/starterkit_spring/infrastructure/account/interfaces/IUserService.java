@@ -5,6 +5,7 @@ package sn.ods.starterkit_spring.infrastructure.account.interfaces;
  * @created 07/01/2025-13:01
  * @project starterkit-spring
  */
+
 public interface IUserService {
     void generatePasswordResetToken(String email) ;
     void resetPassword(String token, String newPassword) ;
