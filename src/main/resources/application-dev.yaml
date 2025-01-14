@@ -17,7 +17,7 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: create-drop
+      ddl-auto: update
     #   properties:
     #      hibernate:
     #         format_sql: true
@@ -38,3 +38,11 @@ spring:
             enable: true
             required: true
     protocol: smtp
+
+logging:
+  level:
+    root: INFO
+    sn:
+      ods: DEBUG
+  file:
+    name: logs/application.log
