@@ -14,7 +14,6 @@ public class StarterkitSpringApplication {
 		SpringApplication.run(StarterkitSpringApplication.class, args);
 	}
 
-
 	@Bean
 	public TomcatProtocolHandlerCustomizer<?> protocolHandlerVirtualThreadExecutorCustomizer() {
 		return protocolHandler -> {

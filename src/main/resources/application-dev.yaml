@@ -4,9 +4,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/db_startkit?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:postgresql://localhost:5432/db_startkit?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
     username: postgres
-    password: P@ssword123
+    password: postgres
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 0
@@ -17,7 +17,7 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: create-drop
+      ddl-auto: update
     #   properties:
     #      hibernate:
     #         format_sql: true
@@ -38,3 +38,9 @@ spring:
             enable: true
             required: true
     protocol: smtp
+
+logging:
+  level:
+    root: INFO
+    sn:
+      ods: DEBUG
