@@ -40,12 +40,12 @@ public class AccountController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
         userService.invalidateToken(token);
-        return ResponseEntity.ok("Déconnexion réussie et token invalidé");
+        return ResponseEntity.ok("Déconnexion réussie");
     }
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
-        userService.generatePasswordResetToken(request.getEmail());
+        userService.sendPasswordResetEmail(request.getEmail());
         return ResponseEntity.ok("Email de réinitialisation envoyé");
     }
 

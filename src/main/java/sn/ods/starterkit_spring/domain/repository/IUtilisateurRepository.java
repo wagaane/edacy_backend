@@ -16,8 +16,9 @@ public interface IUtilisateurRepository
     Optional<Utilisateur> findUtilisateurByEmail(String username);
 
 
-    @Query("SELECT u FROM Utilisateur u JOIN u.profils p WHERE p.code IN :profileCodes")
+    @Query("SELECT u FROM Utilisateur u JOIN u.profiles p WHERE p.code IN :profileCodes")
     List<Utilisateur> findByProfileCodes(List<String> profileCodes);
 
+    Utilisateur findByEmail(String email);
 
 }

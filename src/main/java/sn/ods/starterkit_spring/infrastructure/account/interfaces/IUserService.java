@@ -9,5 +9,5 @@ public interface IUserService {
     void generatePasswordResetToken(String email) ;
     void resetPassword(String token, String newPassword) ;
     void invalidateToken(String token) ;
-
+    void sendPasswordResetEmail(String email) ;
 }
