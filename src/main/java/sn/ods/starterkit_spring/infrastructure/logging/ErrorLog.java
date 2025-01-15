@@ -13,6 +13,8 @@ public class ErrorLog {
     private String serviceName;       // Nom du service où l'erreur s'est produite
     private String methodName;        // Nom de la méthode où l'erreur s'est produite
 
+
+    @Column(columnDefinition = "TEXT")
     private String errorMessage;      // Message d'erreur
 
     //private String stackTrace;
