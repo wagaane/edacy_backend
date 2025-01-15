@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/db_startkit?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
     username: postgres
-    password: tidiane96
+    password: postgres
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 0
