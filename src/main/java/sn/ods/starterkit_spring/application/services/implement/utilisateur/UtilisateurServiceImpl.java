@@ -1,15 +1,98 @@
 package sn.ods.starterkit_spring.application.services.implement.utilisateur;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+
 import sn.ods.starterkit_spring.application.services.interfaces.utilisateur.UtilisateurService;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
+import sn.ods.starterkit_spring.domain.repository.IUtilisateurRepository;
 
-/**
- * @author Abdou Karim CISSOKHO
- * @created 07/01/2025-13:02
- * @project starterkit-spring
- */
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UtilisateurServiceImpl implements UtilisateurService {
+
+    private Map<String, String> resetTokens = new HashMap<>();
+    private Map<String, Boolean> invalidatedTokens = new HashMap<>();
+
+    //@Value("${frontend.reset-password-url}")
+    private String resetUrl;
+
+    private final PasswordEncoder passwordEncoder ;
+
+    private final IUtilisateurRepository utilisateurRepository;
+
+    private final JavaMailSender mailSender;
+
+//    public UtilisateurServiceImpl(PasswordEncoder passwordEncoder, IUtilisateurRepository utilisateurRepository, JavaMailSender mailSender) {
+//        this.passwordEncoder = passwordEncoder;
+//        this.utilisateurRepository = utilisateurRepository;
+//        this.mailSender = mailSender;
+//    }
+
+    public void generatePasswordResetToken(String email) {
+        String token = UUID.randomUUID().toString();
+        resetTokens.put(email, token);
+        // Ici, tu enverrais un e-mail avec le token (simulé pour l'instant)
+        System.out.println("Token de réinitialisation : " + token);
+    }
+
+    public void resetPassword(String token, String newPassword) {
+        String email = resetTokens.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(token))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Token invalide"));
+
+        // Simuler la mise à jour du mot de passe dans la base de données
+        System.out.println("Mot de passe réinitialisé pour : " + email);
+        resetTokens.remove(email);
+    }
+
+    public void invalidateToken(String token) {
+        invalidatedTokens.put(token, true);
+        System.out.println("Token invalidé : " + token);
+    }
+
+    @Override
+    public void sendPasswordResetEmail(String email) {
+        Utilisateur user = utilisateurRepository.findByEmail(email);
+
+        String token = UUID.randomUUID().toString();
+//        user.setResetToken(token);
+//        user.setTokenExpiration(Instant.now().plus(Duration.ofHours(1)));
+//        utilisateurRepository.save(user);
+
+        String resetLink = resetUrl + "?token=" + token;
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Réinitialisation de votre mot de passe");
+        message.setText("Cliquez sur le lien suivant pour réinitialiser votre mot de passe : " + resetLink);
+        mailSender.send(message);
+    }
+
+    @Override
+    public Utilisateur createUser(String email, String password, String firstName,  String phoneNumber) {
+        if (utilisateurRepository.findByEmail(email) != null) {
+            throw new RuntimeException("Cet email est déjà utilisé");
+        }
+
+        Utilisateur user = new Utilisateur();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));  // Hacher le mot de passe avant de le stocker
+        user.setNom(firstName);
+
+        return utilisateurRepository.save(user);
+
+    }
+
+
 }
