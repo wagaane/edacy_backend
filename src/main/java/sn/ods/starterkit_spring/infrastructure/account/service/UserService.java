@@ -1,18 +1,15 @@
 package sn.ods.starterkit_spring.infrastructure.account.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sn.ods.starterkit_spring.domain.model.Utilisateur;
 import sn.ods.starterkit_spring.domain.repository.IUtilisateurRepository;
 import sn.ods.starterkit_spring.infrastructure.account.interfaces.IUserService;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,7 +22,8 @@ public class UserService implements IUserService {
 
     //@Value("${frontend.reset-password-url}")
     private String resetUrl;
-
+    @Autowired
+    PasswordEncoder passwordEncoder ;
     @Autowired
     private IUtilisateurRepository utilisateurRepository;
     @Autowired
@@ -70,6 +68,21 @@ public class UserService implements IUserService {
         message.setSubject("Réinitialisation de votre mot de passe");
         message.setText("Cliquez sur le lien suivant pour réinitialiser votre mot de passe : " + resetLink);
         mailSender.send(message);
+    }
+
+    @Override
+    public Utilisateur createUser(String email, String password, String firstName,  String phoneNumber) {
+            if (utilisateurRepository.findByEmail(email) != null) {
+                throw new RuntimeException("Cet email est déjà utilisé");
+            }
+
+            Utilisateur user = new Utilisateur();
+            user.setEmail(email);
+            user.setPassword(passwordEncoder.encode(password));  // Hacher le mot de passe avant de le stocker
+            user.setNom(firstName);
+
+            return utilisateurRepository.save(user);
+
     }
 
 

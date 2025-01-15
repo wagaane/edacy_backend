@@ -3,12 +3,14 @@ package sn.ods.starterkit_spring.infrastructure.account;
 import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import sn.ods.starterkit_spring.domain.model.Utilisateur;
 import sn.ods.starterkit_spring.infrastructure.account.model.AuthRequest;
 import sn.ods.starterkit_spring.infrastructure.account.model.AuthResponse;
 import sn.ods.starterkit_spring.infrastructure.account.model.ForgotPasswordRequest;
@@ -54,6 +56,16 @@ public class AccountController {
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
         userService.resetPassword(request.getToken(), request.getNewPassword());
         return ResponseEntity.ok("Mot de passe réinitialisé");
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody Utilisateur request) {
+        try {
+            userService.createUser(request.getEmail(), request.getPassword(), request.getNom() , request.getTelephone());
+            return ResponseEntity.ok("Utilisateur créé avec succès");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
 }
