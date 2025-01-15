@@ -45,7 +45,7 @@ public class SecurityConfig  {
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/WEB-INF/classes/images/**"),
             new AntPathRequestMatcher("/static/**"),
-
+            new AntPathRequestMatcher("/account/**")
 
 
     };
