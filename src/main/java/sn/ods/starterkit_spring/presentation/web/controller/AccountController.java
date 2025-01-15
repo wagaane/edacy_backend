@@ -13,7 +13,7 @@ import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.AuthReques
 import sn.ods.starterkit_spring.presentation.dto.responses.AuthResponse;
 import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.ForgotPasswordRequest;
 import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.ResetPasswordRequest;
-import sn.ods.starterkit_spring.application.usecase.services.implement.UserService;
+import sn.ods.starterkit_spring.application.usecase.services.implement.UtilisateurServiceImpl;
 import sn.ods.starterkit_spring.infrastructure.config.security.jwt.JwtProvider;
 
 @RestController
@@ -26,7 +26,7 @@ public class AccountController {
     @Autowired
     private JwtProvider jwtProvider;
     @Autowired
-    private UserService userService;
+    private UtilisateurServiceImpl utilisateurServiceImpl;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -40,26 +40,26 @@ public class AccountController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
-        userService.invalidateToken(token);
+        utilisateurServiceImpl.invalidateToken(token);
         return ResponseEntity.ok("Déconnexion réussie");
     }
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
-        userService.sendPasswordResetEmail(request.getEmail());
+        utilisateurServiceImpl.sendPasswordResetEmail(request.getEmail());
         return ResponseEntity.ok("Email de réinitialisation envoyé");
     }
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
-        userService.resetPassword(request.getToken(), request.getNewPassword());
+        utilisateurServiceImpl.resetPassword(request.getToken(), request.getNewPassword());
         return ResponseEntity.ok("Mot de passe réinitialisé");
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Utilisateur request) {
         try {
-            userService.createUser(request.getEmail(), request.getPassword(), request.getNom() , request.getTelephone());
+            utilisateurServiceImpl.createUser(request.getEmail(), request.getPassword(), request.getNom() , request.getTelephone());
             return ResponseEntity.ok("Utilisateur créé avec succès");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
