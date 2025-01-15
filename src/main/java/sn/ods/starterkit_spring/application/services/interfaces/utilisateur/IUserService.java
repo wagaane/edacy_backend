@@ -1,6 +1,7 @@
-package sn.ods.starterkit_spring.application.usecase.services.interfaces;
+package sn.ods.starterkit_spring.application.services.interfaces.utilisateur;
 
-import sn.ods.starterkit_spring.domain.model.Utilisateur;
+
+import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 
 /**
  * @author Abdou Karim CISSOKHO

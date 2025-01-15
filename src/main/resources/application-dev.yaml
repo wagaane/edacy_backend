@@ -1,5 +1,6 @@
 server:
-  port: 8085
+  error:
+    include-message: always
 
 spring:
   datasource:
@@ -37,3 +38,12 @@ spring:
             enable: true
             required: true
     protocol: smtp
+
+logging:
+  level:
+    root: INFO
+    sn:
+      ods: DEBUG
+
+
+

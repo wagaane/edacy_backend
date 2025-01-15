@@ -1,7 +1,9 @@
+server:
+  port: 8085
+
 spring:
   profiles:
     active: dev
-server:
 
   test:
     database:
@@ -10,7 +12,6 @@ server:
     multipart:
       max-file-size: 50000MB
       max-request-size: 50000MB
-    context-path: /api-v1
 
 
 
@@ -31,8 +32,8 @@ projet:
 
 
 upload:
-  path: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits/
-  image: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits/
+  path: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
+  image: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
 
 
 smtp:
@@ -44,3 +45,11 @@ smtp:
 app:
   file:
     regex-splitter: '@##___@##'
+  url:
+    front: http://localhost:4200/#/auth
+
+url:
+  logo:
+    starterkit: http://localhost:8085/static/logo-image.png
+
+
