@@ -38,14 +38,14 @@ public class SecurityConfig  {
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
     private static final RequestMatcher[] AUTH_WHITELIST = {
-            new AntPathRequestMatcher("/auth/**"),
-            new AntPathRequestMatcher("/logs/**"),
-            new AntPathRequestMatcher("/swagger-ui.html"),
-            new AntPathRequestMatcher("/swagger-ui/**"),
-            new AntPathRequestMatcher("/v3/api-docs/**"),
-            new AntPathRequestMatcher("/WEB-INF/classes/images/**"),
-            new AntPathRequestMatcher("/static/**"),
-            new AntPathRequestMatcher("/account/**")
+            new AntPathRequestMatcher("/api-v1/auth/**"),
+            new AntPathRequestMatcher("/api-v1/logs/**"),
+            new AntPathRequestMatcher("/api-v1/swagger-ui.html"),
+            new AntPathRequestMatcher("/api-v1/swagger-ui/**"),
+            new AntPathRequestMatcher("/api-v1/v3/api-docs/**"),
+            new AntPathRequestMatcher("/api-v1/WEB-INF/classes/images/**"),
+            new AntPathRequestMatcher("/api-v1/static/**"),
+            new AntPathRequestMatcher("/api-v1/account/**")
 
 
     };

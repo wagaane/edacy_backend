@@ -1,9 +1,16 @@
 package sn.ods.starterkit_spring.infrastructure.logging;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class ErrorLogService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ErrorLogService.class);
 
     private final ErrorLogRepository errorLogRepository;
 
@@ -11,8 +18,13 @@ public class ErrorLogService {
         this.errorLogRepository = errorLogRepository;
     }
 
-    public void logError(String serviceName, String methodName, String errorMessage) {
-        ErrorLog errorLog = new ErrorLog(serviceName, methodName, errorMessage);
-        errorLogRepository.save(errorLog);
+    public void logError(String path, String message, int statusCode, LocalDateTime localDateTime) {
+        try {
+            ErrorLog errorLog = new ErrorLog(path, message, statusCode, localDateTime);
+            errorLogRepository.save(errorLog);
+            logger.info("Error logged successfully: {}", message);
+        } catch (Exception e) {
+            logger.error("Failed to log error: {}", e.getMessage(), e);
+        }
     }
 }

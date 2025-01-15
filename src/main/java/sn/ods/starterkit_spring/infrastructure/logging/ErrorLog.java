@@ -1,4 +1,5 @@
 package sn.ods.starterkit_spring.infrastructure.logging;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -10,26 +11,20 @@ public class ErrorLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String serviceName;       // Nom du service où l'erreur s'est produite
-    private String methodName;        // Nom de la méthode où l'erreur s'est produite
+    private String path;          // Chemin de l'API (ex: "/api-v1/account/logout")
+    private String message;       // Message d'erreur (ex: "Required request header 'Authorization'...")
+    private int statusCode;       // Code de statut HTTP (ex: 500)
+    private LocalDateTime localDateTime; // Date et heure de l'erreur
 
-
-    @Column(columnDefinition = "TEXT")
-    private String errorMessage;      // Message d'erreur
-
-    //private String stackTrace;
-    // Stack trace de l'erreur
-    private LocalDateTime timestamp;  // Date et heure de l'erreur
-
+    // Constructeurs
     public ErrorLog() {
-        this.timestamp = LocalDateTime.now();
+        this.localDateTime = LocalDateTime.now();
     }
 
-    public ErrorLog(String serviceName, String methodName, String errorMessage) {
-        this.serviceName = serviceName;
-        this.methodName = methodName;
-        this.errorMessage = errorMessage;
-
-        this.timestamp = LocalDateTime.now();
+    public ErrorLog(String path, String message, int statusCode, LocalDateTime localDateTime) {
+        this.path = path;
+        this.message = message;
+        this.statusCode = statusCode;
+        this.localDateTime = localDateTime;
     }
 }
