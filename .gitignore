@@ -32,6 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-src/main/resources/application-dev.yml
+src/main/resources/application-dev.yaml
 src/main/resources/application-am.yaml
 /logs/application.log
