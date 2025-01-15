@@ -19,6 +19,7 @@ import static sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nKeys
 @Service
 @RequiredArgsConstructor
 public class UtilisateurDetailsSerciveImpl implements UserDetailsService {
+
     private final IUtilisateurRepository utilisateurRepository;
     private final LoginAttemptService loginAttemptService;
     private final I18nTranslate i18nTranslat;
@@ -32,4 +33,5 @@ public class UtilisateurDetailsSerciveImpl implements UserDetailsService {
         Utilisateur utilisateur = utilisateurRepository.findUtilisateurByEmail(username).orElseThrow((() -> new UsernameNotFoundException(i18nTranslat.toTranslate(UTILISATEUR_ABSENT) + " : " + username)));
         return UtilisateurPrinciple.build(utilisateur);
     }
+
 }

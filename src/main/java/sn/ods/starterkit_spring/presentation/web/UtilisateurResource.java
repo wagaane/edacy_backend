@@ -1,4 +1,4 @@
-package sn.ods.starterkit_spring.presentation.web.shared.file;
+package sn.ods.starterkit_spring.presentation.web;
 
 /**
  * @author Abdou Karim CISSOKHO
