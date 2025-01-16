@@ -1,10 +1,14 @@
 package sn.ods.starterkit_spring.application.services.interfaces.authentication;
 
+import org.springframework.http.ResponseEntity;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
+import sn.ods.starterkit_spring.presentation.dto.requests.authencation.ForgetFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.InitialAuthenticationDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.LoginFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.ResetOrForgetFormDTO;
+import sn.ods.starterkit_spring.presentation.dto.responses.APIResponse;
 import sn.ods.starterkit_spring.presentation.dto.responses.Response;
+import sn.ods.starterkit_spring.presentation.dto.responses.authentication.JwtDTO;
 
 /**
  * @author Abdou Karim CISSOKHO
@@ -14,13 +18,13 @@ import sn.ods.starterkit_spring.presentation.dto.responses.Response;
 public interface AuthenticationService {
 
 
-    Response<Object> singIn(LoginFormDTO loginFormDTO);
-    Response<Object> refreshToken(String token);
-    Response<Object> authenticateUserWithFirstUrlConnexion(InitialAuthenticationDTO formRequest);
-    Response<Object> authenticateUserWithForgetPasswordUrlConnexion(ResetOrForgetFormDTO formRequest);
-    Response<Object> reinitPassword(String login);
+    JwtDTO singIn(LoginFormDTO loginFormDTO);
+    JwtDTO refreshToken(String token);
+    ResponseEntity<APIResponse> authenticateUserWithFirstUrlConnexion(InitialAuthenticationDTO formRequest);
+    JwtDTO authenticateUserWithForgetPasswordUrlConnexion(ForgetFormDTO formRequest);
+    Utilisateur reinitPassword(String login);
     //  Response<Object> editUserInfos(EditMonCompteDTO req);
-    Response<Object> updatePasswordFromInterface(ResetOrForgetFormDTO form);
+    ResponseEntity<APIResponse> updatePasswordFromInterface(ResetOrForgetFormDTO form);
 
     Utilisateur getCurrentConnectedUser();
 }
