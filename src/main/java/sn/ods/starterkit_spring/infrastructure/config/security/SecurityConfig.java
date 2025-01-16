@@ -23,9 +23,7 @@ import sn.ods.starterkit_spring.infrastructure.config.security.jwt.JwtAuthTokenF
 
 import java.util.List;
 
-/**
- * @author G2k R&D
- */
+
 @Configuration
 @EnableWebSecurity
 @EnableTransactionManagement
@@ -33,19 +31,18 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig  {
 
-    //private final UtilisateurDetailsSerciveImpl utilisateurDetailsSercive;
+
     private final JwtAuthTokenFilter jwtAuthTokenFilter;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
     private static final RequestMatcher[] AUTH_WHITELIST = {
-            new AntPathRequestMatcher("/api-v1/auth/**"),
-            new AntPathRequestMatcher("/api-v1/logs/**"),
-            new AntPathRequestMatcher("/api-v1/swagger-ui.html"),
-            new AntPathRequestMatcher("/api-v1/swagger-ui/**"),
-            new AntPathRequestMatcher("/api-v1/v3/api-docs/**"),
-            new AntPathRequestMatcher("/api-v1/WEB-INF/classes/images/**"),
-            new AntPathRequestMatcher("/api-v1/static/**"),
-            new AntPathRequestMatcher("/api-v1/account/**")
+            new AntPathRequestMatcher("/auth/**"),
+            new AntPathRequestMatcher("/logs/**"),
+            new AntPathRequestMatcher("/swagger-ui.html"),
+            new AntPathRequestMatcher("/swagger-ui/**"),
+            new AntPathRequestMatcher("/v3/api-docs/**"),
+            new AntPathRequestMatcher("/WEB-INF/classes/images/**"),
+            new AntPathRequestMatcher("/static/**")
 
 
     };
@@ -78,6 +75,8 @@ public class SecurityConfig  {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
+
+
 
 
 

@@ -14,9 +14,7 @@ import java.io.OutputStream;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-/**
- * @author G2k R&D
- */
+
 
 @Component
 @RequiredArgsConstructor

@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import sn.ods.starterkit_spring.infrastructure.config.security.services.UtilisateurPrinciple;
 import sn.ods.starterkit_spring.presentation.dto.responses.mails.MailConnexionInfosDTO;
@@ -11,8 +12,6 @@ import sn.ods.starterkit_spring.presentation.dto.responses.mails.MailConnexionIn
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Date;
 
 
@@ -29,15 +28,17 @@ public class JwtProvider {
 
     private static final  String INFOS= "infos";
 
-    public String generateToken(String email) {
+    public String generateToken(Authentication authentication) {
+        UtilisateurPrinciple utilisateurPrinciple = (UtilisateurPrinciple) authentication.getPrincipal();
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(utilisateurPrinciple.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(Date.from(Instant.now().plus(Duration.ofMinutes(jwtExpiration))))
-                .signWith(getSignatureKey(), SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + (long) jwtExpiration * 60 * 1000))
+                .claim("authorities", authentication.getAuthorities())
+                .claim(INFOS, utilisateurPrinciple.getUtilisateurInfo())
+                .signWith(getSignatureKey())
                 .compact();
     }
-
 
     public String generateJwtMailToken(MailConnexionInfosDTO infos) {
         return Jwts.builder()
@@ -80,5 +81,4 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(
                 jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
-
 }
