@@ -15,6 +15,7 @@ import java.util.Set;
 
 @MapperConfig
 public interface EntityMapper<E, DRQ, DRP> {
+
     DRP toDto(E entity);
 
         List<DRP> toDtoList(List<E> entityList);

@@ -1,9 +1,79 @@
 package sn.ods.starterkit_spring.presentation.web;
 
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import sn.ods.starterkit_spring.application.services.interfaces.utilisateur.UtilisateurService;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
+import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.UtilisateurReqDTO;
+import sn.ods.starterkit_spring.presentation.dto.responses.APIResponse;
+import sn.ods.starterkit_spring.presentation.dto.responses.Response;
+import sn.ods.starterkit_spring.presentation.mappers.utilisateur.UtilisateurMapper;
+
 /**
  * @author Abdou Karim CISSOKHO
  * @created 07/01/2025-13:04
  * @project starterkit-spring
  */
+
+@RestController
+@RequestMapping("/utilisateur")
+
+@RequiredArgsConstructor
 public class UtilisateurResource {
+
+    private  final UtilisateurService utilisateurService;
+
+    private final UtilisateurMapper utilisateurMapper;
+
+
+
+    @Operation(summary = "Endpoint permetant de faire l'ajout  d'un  nouveau  utilisateur")
+    @PostMapping("/add-user")
+    public ResponseEntity<APIResponse> createUser(@RequestBody @Valid UtilisateurReqDTO dto) {
+
+        Utilisateur user = utilisateurService.createUser(dto);
+
+        APIResponse response = APIResponse.success(utilisateurMapper.toDto(user));
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
+    @Operation(summary = "Endpoint permetant de faire une  modification  d'un   utilisateur à partir de  son id fourni")
+    @PutMapping("/update-user/{id}")
+    public ResponseEntity<APIResponse> updateUser(@PathVariable("id")Long id, @RequestBody @Valid UtilisateurReqDTO dto) {
+
+        Utilisateur user = utilisateurService.updateUser(id, dto);
+
+        APIResponse response = APIResponse.success(utilisateurMapper.toDto(user));
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @Operation(summary = "Endpoint pour récupérer  un   utilisateur à partir de  son id fourni")
+    @GetMapping("/user-id/{id}")
+    public ResponseEntity<APIResponse> getUser(@PathVariable("id")Long id) {
+
+        Utilisateur user = utilisateurService.getUser(id);
+
+        APIResponse response = APIResponse.success(utilisateurMapper.toDto(user));
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @Operation(summary = "Endpoint pour lister les  utilisateur avec filtre")
+    @GetMapping(path = "/user/page")
+    public Response<Object> getUserPage(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "filter", defaultValue = "") String filter
+           ) {
+        return utilisateurService.getUserPage(page, size, filter);
+    }
 }

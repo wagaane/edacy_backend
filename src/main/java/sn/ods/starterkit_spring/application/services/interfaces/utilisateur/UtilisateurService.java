@@ -4,6 +4,8 @@ package sn.ods.starterkit_spring.application.services.interfaces.utilisateur;
 
 
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
+import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.UtilisateurReqDTO;
+import sn.ods.starterkit_spring.presentation.dto.responses.Response;
 
 /**
  * @author Abdou Karim CISSOKHO
@@ -12,10 +14,13 @@ import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
  */
 
 public interface UtilisateurService {
-    void generatePasswordResetToken(String email) ;
-    void resetPassword(String token, String newPassword) ;
-    void invalidateToken(String token) ;
-    void sendPasswordResetEmail(String email) ;
-    Utilisateur createUser(String email, String password, String firstName , String phoneNumber) ;
+
+
+    Utilisateur createUser(UtilisateurReqDTO dto);
+    Utilisateur updateUser(Long id,UtilisateurReqDTO dto);
+    Utilisateur getUser(Long id);
+
+    Response<Object> getUserPage(int page, int size, String filter);
+
 
 }

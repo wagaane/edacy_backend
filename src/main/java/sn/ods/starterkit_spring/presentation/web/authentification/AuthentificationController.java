@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sn.ods.starterkit_spring.application.services.interfaces.authentication.AuthenticationService;
+import sn.ods.starterkit_spring.presentation.dto.requests.authencation.InitialAuthenticationDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.LoginFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.ResetOrForgetFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.responses.Response;
@@ -37,7 +38,7 @@ public class AuthentificationController {
 
     @Operation(summary = "Endpoint pour s'authentifier à partir d'un lien mail pour une première connexion")
     @PostMapping("/signin-with-url-connexion")
-    public Response<Object> authenticateUserWithFirstUrlConnexion(@Valid @RequestBody ResetOrForgetFormDTO formRequest) {
+    public Response<Object> authenticateUserWithFirstUrlConnexion(@Valid @RequestBody InitialAuthenticationDTO formRequest) {
 
          return iAuthentification.authenticateUserWithFirstUrlConnexion(formRequest);
     }

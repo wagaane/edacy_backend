@@ -2,6 +2,7 @@ package sn.ods.starterkit_spring.presentation.mappers.utilisateur;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,8 @@ import java.util.stream.Collectors;
  * @project starterkit-spring
  */
 
-@Mapper
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UtilisateurMapper extends EntityMapper<Utilisateur, UtilisateurReqDTO, UtilisateurResDTO> {
 
 

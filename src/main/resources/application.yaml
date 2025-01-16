@@ -10,7 +10,7 @@ server:
     multipart:
       max-file-size: 50000MB
       max-request-size: 50000MB
-    context-path: /api-v1
+    context-path: /api/v1
 
 
 
@@ -55,3 +55,4 @@ url:
     starterkit: http://localhost:8085/static/logo-image.png
 
 
+interval: PT30S

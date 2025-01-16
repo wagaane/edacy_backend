@@ -37,6 +37,7 @@ public class SecurityConfig  {
 
     private static final RequestMatcher[] AUTH_WHITELIST = {
             new AntPathRequestMatcher("/auth/**"),
+            new AntPathRequestMatcher("/utilisateur/**"),
             new AntPathRequestMatcher("/logs/**"),
             new AntPathRequestMatcher("/swagger-ui.html"),
             new AntPathRequestMatcher("/swagger-ui/**"),

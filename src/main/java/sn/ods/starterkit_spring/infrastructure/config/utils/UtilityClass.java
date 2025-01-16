@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @created 22/05/2024-18:23
  * @project backend_mfpai
  */
-public class UtilityClass {
+public  class UtilityClass {
     public static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private static final String WORD_SEPARATOR = " ";
     private static final Random RANDOM = new SecureRandom(); // Use SecureRandom to generate random numbers for password characters
@@ -183,6 +183,32 @@ public class UtilityClass {
 //                    .count() < mySet.size();
 //        }
     }
+
+    public static class EmailUtility {
+        // Expression régulière pour valider une adresse email
+        private static final String EMAIL_PATTERN = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        private final Pattern pattern;
+        private Matcher matcher;
+
+        public EmailUtility() {
+            this.pattern = Pattern.compile(EMAIL_PATTERN);
+        }
+
+        /**
+         * Valide si l'adresse email donnée est valide.
+         *
+         * @param email L'adresse email à valider.
+         * @return true si l'email est valide, false sinon.
+         */
+        public boolean validate(String email) {
+            if (email == null || email.isEmpty()) {
+                return false;
+            }
+            matcher = pattern.matcher(email);
+            return matcher.matches();
+        }
+    }
+
 
     public static class PasswordUtility {
 

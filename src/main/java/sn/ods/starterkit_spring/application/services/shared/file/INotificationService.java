@@ -8,19 +8,10 @@ import sn.ods.starterkit_spring.presentation.dto.responses.mails.MailInfosDTO;
 public interface INotificationService {
    void sendNotificationToNewUserRegistred(LoginFormDTO loginFormDTO, String action);
 
-
- void sendNotificationMailOS(LoginFormDTO loginFormDTO, String file);
-
- void sendNotificationToNewUserRegistredByAdmin(LoginFormDTO loginFormDTO, String action);
+    void sendNotificationToNewUserRegistredByAdmin(LoginFormDTO loginFormDTO, String action);
     void sendNotificationToUserEdited(LoginFormDTO loginFormDTO, String action);
     void sendNotificationToUserForgetPassword(LoginFormDTO loginFormDTO, String action);
     void sendEmail(MailInfosDTO mailInfosDTO);
     void sendNotificationStatut(Utilisateur utilisateur);
 
-    /*
-    * Permutation : envoie notification par email au demandeur */
-    void sendNotificationDemandeurPermutation(LoginFormDTO loginFormDTO, String traitant, long id, String statut);
-
-
- void sendEmailOS(MailInfosDTO mailInfosDTO, String os);
 }
