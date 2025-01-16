@@ -21,6 +21,7 @@ import sn.ods.starterkit_spring.domain.repository.ProfilRepository;
 import sn.ods.starterkit_spring.domain.repository.UtilisateurRepository;
 import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.infrastructure.config.password.PasswordGenerator;
+import sn.ods.starterkit_spring.infrastructure.config.utils.UtilityClass;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.LoginFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.UtilisateurReqDTO;
 import sn.ods.starterkit_spring.presentation.dto.responses.Response;
@@ -66,6 +67,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
         utilisateur.setFirstLog(false);
         utilisateur.setStatus(false);
+
+        if (new UtilityClass.EmailUtility().validate(dto.getEmail())) {
+
+           utilisateur.setEmail(dto.getEmail());
+        } else {
+           throw new APIException("Invalid email address");
+        }
+
 
         String password = PasswordGenerator.generateRandomString();
         log.info("................password: = {}", password);
