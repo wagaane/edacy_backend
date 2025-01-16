@@ -15,17 +15,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
-import java.util.Collections;
-
-import static org.springframework.http.HttpHeaders.*;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 
-@Configuration
 @RequiredArgsConstructor
+@Configuration
 public class ApplicationConfig {
 
     private final UserDetailsService userDetailsService;
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -36,9 +34,8 @@ public class ApplicationConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(12); // Force personnalisée
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -47,53 +44,42 @@ public class ApplicationConfig {
 
     @Bean
     public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
 
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        final CorsConfiguration config = new CorsConfiguration();
-
+        // Activer les credentials
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.setAllowCredentials(true);
-        //config.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "OPTIONS", "DELETE"));
-       /* config.setAllowedHeaders(Arrays.asList("X-Requested-With", "Content-Type", "Authorization", "Origin",
-                "Accept", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
 
-        */
-        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
-        config.setAllowedOrigins(Collections.singletonList("http://localhost:8097/swagger-ui"));
-        config.setAllowedHeaders(Arrays.asList(
-                ORIGIN,
-                CONTENT_TYPE,
-                ACCEPT,
-                AUTHORIZATION
+        // Définir les origines autorisées
+        config.setAllowedOrigins(Arrays.asList(
+                "http://localhost:4200",
+                "http://localhost:8097/swagger-ui"
         ));
+
+        // Définir les en-têtes autorisés
+        config.setAllowedHeaders(Arrays.asList(
+                "X-Requested-With",
+                "Content-Type",
+                "Authorization",
+                "Origin",
+                "Accept",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
+        ));
+
+        // Définir les méthodes HTTP autorisées
         config.setAllowedMethods(Arrays.asList(
                 GET.name(),
                 POST.name(),
                 DELETE.name(),
                 PUT.name(),
-                PATCH.name()
+                PATCH.name(),
+                OPTIONS.name()
         ));
+
+        // Enregistrer la configuration pour toutes les routes
         source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);
-
     }
-
-
-    /*   @Bean
-       CorsConfigurationSource corsConfigurationSource() {
-           CorsConfiguration configuration = new CorsConfiguration();
-           configuration.addAllowedOrigin("*");
-           configuration.setAllowCredentials(true);
-           configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "OPTIONS", "DELETE"));
-           configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Content-Type", "Authorization", "Origin",
-                   "Accept", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
-           UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-           source.registerCorsConfiguration("/**", configuration);
-           return source;
-       }
-
-     */
-
 }
