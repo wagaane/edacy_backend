@@ -10,7 +10,7 @@ server:
     multipart:
       max-file-size: 50000MB
       max-request-size: 50000MB
-    context-path: /api-v1
+    context-path: /api/v1
 
 
 
