@@ -23,15 +23,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UtilisateurReqDTO {
-    protected String prenom;
-    protected String nom;
-    protected String email;
-    protected String password;
-    protected String telephone;
-    protected String adresse;
-    protected String sexe;
-    protected Set<Profile> profiles;
-    protected String lieuDeNaissance;
-    protected LocalDate dateNaissance;
+    private String prenom;
+    private String nom;
+    private String email;
+    private String telephone;
+    private String adresse;
+    private String sexe;
+    private Set<Profile> profiles;
+    private String lieuDeNaissance;
+    private LocalDate dateNaissance;
 
 }

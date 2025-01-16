@@ -65,8 +65,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
         utilisateur.setProfiles(profiles);
 
-        utilisateur.setFirstLog(false);
-        utilisateur.setStatus(false);
+        utilisateur.setFirstLog(true);
+        utilisateur.setStatus(true);
 
         if (new UtilityClass.EmailUtility().validate(dto.getEmail())) {
 

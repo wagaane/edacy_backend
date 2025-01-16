@@ -1,6 +1,7 @@
 package sn.ods.starterkit_spring.application.services.interfaces.authentication;
 
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
+import sn.ods.starterkit_spring.presentation.dto.requests.authencation.InitialAuthenticationDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.LoginFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.ResetOrForgetFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.responses.Response;
@@ -15,7 +16,7 @@ public interface AuthenticationService {
 
     Response<Object> singIn(LoginFormDTO loginFormDTO);
     Response<Object> refreshToken(String token);
-    Response<Object> authenticateUserWithFirstUrlConnexion(ResetOrForgetFormDTO formRequest);
+    Response<Object> authenticateUserWithFirstUrlConnexion(InitialAuthenticationDTO formRequest);
     Response<Object> authenticateUserWithForgetPasswordUrlConnexion(ResetOrForgetFormDTO formRequest);
     Response<Object> reinitPassword(String login);
     //  Response<Object> editUserInfos(EditMonCompteDTO req);

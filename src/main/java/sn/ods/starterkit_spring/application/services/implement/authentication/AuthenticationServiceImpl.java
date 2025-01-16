@@ -21,6 +21,7 @@ import sn.ods.starterkit_spring.infrastructure.config.security.services.LoginAtt
 import sn.ods.starterkit_spring.infrastructure.config.utils.UtilityClass;
 import sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nKeys;
 import sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nTranslate;
+import sn.ods.starterkit_spring.presentation.dto.requests.authencation.InitialAuthenticationDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.LoginFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.ResetOrForgetFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.responses.APIMessage;
@@ -92,9 +93,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
-    public Response<Object> authenticateUserWithFirstUrlConnexion(ResetOrForgetFormDTO formRequest) {
+    public Response<Object> authenticateUserWithFirstUrlConnexion(InitialAuthenticationDTO formRequest) {
         if (new UtilityClass.PasswordUtility().validate(formRequest.newPassword())) {
-
+           log.info("New password is valid");
             try {
 
                 Optional<Utilisateur> resp = utilisateurRepository.findUtilisateurByEmail(formRequest.login());
@@ -103,12 +104,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                             .setMessage(i18nTranslat.toTranslate(UTILISATEUR_ABSENT) + " : " + formRequest.login());
 
                 Utilisateur user = resp.get();
-                if (Boolean.FALSE.equals(user.getFirstLog()))
+
+           if (Boolean.FALSE.equals(user.getFirstLog()))
                     return Response.badRequest().setMessage(i18nTranslat.toTranslate(CONNEXION_LOGIN_RESET_FAIT));
 
-                if (Boolean.FALSE.equals(user.getStatus()))
+            if (Boolean.FALSE.equals(user.getStatus()))
                     return Response.disabledAccount()
                             .setMessage(i18nTranslat.toTranslate(I18nKeys.CONNEXION_LOGIN_TENTATIVE));
+
+
 
                 // System.out.println(formRequest);
                 Response<Object> response = updatePassword(formRequest);
@@ -198,6 +202,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private Response<Object> updatePassword(ResetOrForgetFormDTO form) {
+        Optional<Utilisateur> resp = utilisateurRepository.findUtilisateurByEmail(form.login());
+        if (resp.isPresent()) {
+            Utilisateur utilisateur = resp.get();
+            utilisateur.setPassword(encoder.encode(form.newPassword()));
+            utilisateur.setFirstLog(false);
+
+            Utilisateur updatedUser = utilisateurRepository.save(utilisateur);
+            return Response.ok().setMessage(i18nTranslat.toTranslate(MOT_DE_PASSE_MODIFIER_AVEC_SUCCES))
+                    .setPayload(updatedUser);
+        }
+
+        return Response.notFound().setMessage(i18nTranslat.toTranslate(UTILISATEUR_ABSENT));
+    }
+
+    private Response<Object> updatePassword(InitialAuthenticationDTO form) {
         Optional<Utilisateur> resp = utilisateurRepository.findUtilisateurByEmail(form.login());
         if (resp.isPresent()) {
             Utilisateur utilisateur = resp.get();
