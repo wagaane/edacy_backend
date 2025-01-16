@@ -20,7 +20,7 @@ public class ErrorLogService {
 
     public void logError(String path, String message, int statusCode, LocalDateTime localDateTime) {
         try {
-            ErrorLog errorLog = new ErrorLog(path, message, statusCode, localDateTime);
+            ErrorLog errorLog = new ErrorLog(path, messge, statusCode, localDateTime);
             errorLogRepository.save(errorLog);
             logger.info("Error logged successfully: {}", message);
         } catch (Exception e) {
