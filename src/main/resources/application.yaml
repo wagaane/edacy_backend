@@ -52,3 +52,4 @@ url:
     starterkit: http://localhost:8085/static/logo-image.png
 
 
+interval: PT30S

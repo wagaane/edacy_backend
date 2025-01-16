@@ -69,8 +69,9 @@ public  class Utilisateur extends Auditable<Long> {
     @Column(name = "user_sexe")
     private String sexe;
 
-    @OneToMany
-    @JoinColumn(name = "profile")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "TR_USER_PROFILE",  joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "profile_id"))
     private Set<Profile> profiles = new HashSet<>();
 
     @Size(max = 100)

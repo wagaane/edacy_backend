@@ -39,9 +39,9 @@ public class NotificationServiceImpl implements INotificationService {
     public void sendNotificationToNewUserRegistred(LoginFormDTO loginFormDTO, String action) {
         String lien = getLinkWithToken(loginFormDTO, action);
         String textMessage = """
-                Bienvenue dans la plateforme MFPAI <span>....</span>.\s
+                Bienvenue dans la plateforme STARTER KIT ODS <span>....</span>.\s
                 Merci de cliquer <a href=%s style="color: #3498DB;">ici</a> pour activer votre compte.
-               SIGRH, vous remercie de votre confiance.
+               ODS, vous remercie de votre confiance.
                 """.formatted(lien);
 
         MailInfosDTO mailInfosDTO = new MailInfosDTO(null, textMessage, INSCRIPTION, null, loginFormDTO.login());
@@ -60,29 +60,7 @@ public class NotificationServiceImpl implements INotificationService {
         sendEmail(mailInfosDTO);
     }
 
-    @Override
-    public void sendNotificationDemandeurPermutation(LoginFormDTO loginFormDTO, String traitant, long id, String statut) {
-        System.out.println("## les infos "+ loginFormDTO.login()+ " ++++++ "+ traitant+" ----- "+statut);
-        String textMessage = """
-                 Ministère de la formation Professionnelle\s
-                 Votre demande de permutation <strong> N° %d </strong> a été %s par %s.
-                 """.formatted(id,statut,traitant);
 
-        MailInfosDTO mailInfosDTO = new MailInfosDTO(null, textMessage, SUIVI_PERMUTATION, null, loginFormDTO.login());
-        sendEmail(mailInfosDTO);
-    }
-
-    @Override
-    public void sendNotificationMailOS(LoginFormDTO loginFormDTO, String file) {
-        System.out.println("## send mail notif les infos "+ loginFormDTO.login()+ " ++++++ "+ file+" ----- ");
-        String textMessage = """
-                 Ministère de la formation Professionnelle\s
-                 Nous vous envoyons en PJ l'ordre de service concernant les permutations.
-                 """;
-
-        MailInfosDTO mailInfosDTO = new MailInfosDTO(null, textMessage, INSCRIPTION, null, loginFormDTO.login());
-        sendEmailOS(mailInfosDTO, file);
-    }
 
     @Override
     public void sendNotificationToNewUserRegistredByAdmin(LoginFormDTO loginFormDTO, String action) {
@@ -127,14 +105,7 @@ public class NotificationServiceImpl implements INotificationService {
 
         mailService.sendMail(mailInfos);
     }
-
-    @Override
-    public void sendEmailOS(MailInfosDTO mailInfosDTO, String os) {
-        System.out.println("### send mail fonction notif IA IEF ETAB");
-        MailInfosDTO mailInfos = new MailInfosDTO(mailInfosDTO.id(), mailInfosDTO.originalText(), mailInfosDTO.subject(), getHtmlMessage(mailInfosDTO.originalText(), urlLogoStarterKit,NOM_ORGANISATION), mailInfosDTO.destinataire());
-        mailService.sendMailOS(mailInfos,os);
-    }
-
+    
     private String getLinkWithToken(LoginFormDTO loginFormDTO, String action) {
         MailConnexionInfosDTO infos = new MailConnexionInfosDTO(loginFormDTO.login(), loginFormDTO.password(), action);
         String mailToken = jwtProvider.generateJwtMailToken(infos);

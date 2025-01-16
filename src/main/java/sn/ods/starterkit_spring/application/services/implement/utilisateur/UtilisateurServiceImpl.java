@@ -1,97 +1,158 @@
 package sn.ods.starterkit_spring.application.services.implement.utilisateur;
 
+import com.querydsl.core.BooleanBuilder;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 import sn.ods.starterkit_spring.application.services.interfaces.utilisateur.UtilisateurService;
+import sn.ods.starterkit_spring.application.services.shared.file.INotificationService;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Profile;
+import sn.ods.starterkit_spring.domain.model.utilisateur.QUtilisateur;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
-import sn.ods.starterkit_spring.domain.repository.IUtilisateurRepository;
+import sn.ods.starterkit_spring.domain.repository.ProfilRepository;
+import sn.ods.starterkit_spring.domain.repository.UtilisateurRepository;
+import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
+import sn.ods.starterkit_spring.infrastructure.config.password.PasswordGenerator;
+import sn.ods.starterkit_spring.presentation.dto.requests.authencation.LoginFormDTO;
+import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.UtilisateurReqDTO;
+import sn.ods.starterkit_spring.presentation.dto.responses.Response;
+import sn.ods.starterkit_spring.presentation.dto.responses.utilisateur.UtilisateurResDTO;
+import sn.ods.starterkit_spring.presentation.mappers.utilisateur.UtilisateurMapper;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UtilisateurServiceImpl implements UtilisateurService {
 
-    private Map<String, String> resetTokens = new HashMap<>();
-    private Map<String, Boolean> invalidatedTokens = new HashMap<>();
+    private final UtilisateurRepository utilisateurRepository;
+    private final INotificationService notificationService;
+    private final UtilisateurMapper  utilisateurMapper;
 
-    //@Value("${frontend.reset-password-url}")
-    private String resetUrl;
+    private final ProfilRepository profilRepository;
 
-    private final PasswordEncoder passwordEncoder ;
+    public static final String FIRST_CONNEXION = "FIRST_CONNEXION";
+    private static final String BLANK = " ";
 
-    private final IUtilisateurRepository utilisateurRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    private final JavaMailSender mailSender;
-
-//    public UtilisateurServiceImpl(PasswordEncoder passwordEncoder, IUtilisateurRepository utilisateurRepository, JavaMailSender mailSender) {
-//        this.passwordEncoder = passwordEncoder;
-//        this.utilisateurRepository = utilisateurRepository;
-//        this.mailSender = mailSender;
-//    }
-
-    public void generatePasswordResetToken(String email) {
-        String token = UUID.randomUUID().toString();
-        resetTokens.put(email, token);
-        // Ici, tu enverrais un e-mail avec le token (simulé pour l'instant)
-        System.out.println("Token de réinitialisation : " + token);
-    }
-
-    public void resetPassword(String token, String newPassword) {
-        String email = resetTokens.entrySet().stream()
-                .filter(entry -> entry.getValue().equals(token))
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Token invalide"));
-
-        // Simuler la mise à jour du mot de passe dans la base de données
-        System.out.println("Mot de passe réinitialisé pour : " + email);
-        resetTokens.remove(email);
-    }
-
-    public void invalidateToken(String token) {
-        invalidatedTokens.put(token, true);
-        System.out.println("Token invalidé : " + token);
-    }
 
     @Override
-    public void sendPasswordResetEmail(String email) {
-        Utilisateur user = utilisateurRepository.findByEmail(email);
+    @Transactional
+    public Utilisateur createUser(UtilisateurReqDTO dto) {
 
-        String token = UUID.randomUUID().toString();
-//        user.setResetToken(token);
-//        user.setTokenExpiration(Instant.now().plus(Duration.ofHours(1)));
-//        utilisateurRepository.save(user);
+        Utilisateur utilisateur = utilisateurMapper.toEntity(dto);
 
-        String resetLink = resetUrl + "?token=" + token;
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
-        message.setSubject("Réinitialisation de votre mot de passe");
-        message.setText("Cliquez sur le lien suivant pour réinitialiser votre mot de passe : " + resetLink);
-        mailSender.send(message);
-    }
+        Set<Profile> profiles = new HashSet<>();
 
-    @Override
-    public Utilisateur createUser(String email, String password, String firstName,  String phoneNumber) {
-        if (utilisateurRepository.findByEmail(email) != null) {
-            throw new RuntimeException("Cet email est déjà utilisé");
+        dto.getProfiles().forEach(profile -> {
+            Optional<Profile> profileDB = profilRepository.findByCode(profile.getCode());
+            profileDB.ifPresent(profiles::add);
+        });
+
+        utilisateur.setProfiles(profiles);
+
+        utilisateur.setFirstLog(false);
+        utilisateur.setStatus(false);
+
+        String password = PasswordGenerator.generateRandomString();
+        log.info("................password: = {}", password);
+
+        utilisateur.setPassword(passwordEncoder.encode(password));
+
+        var userSaved =  utilisateurRepository.save(utilisateur);
+
+
+        if (userSaved.getEmail() != null) {
+            notificationService.sendNotificationToNewUserRegistred(
+                    new LoginFormDTO(userSaved.getEmail(), password), FIRST_CONNEXION);
+
+
         }
 
-        Utilisateur user = new Utilisateur();
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));  // Hacher le mot de passe avant de le stocker
-        user.setNom(firstName);
 
-        return utilisateurRepository.save(user);
-
+        return utilisateurRepository.save(utilisateur);
     }
 
+    @Override
+    public Utilisateur updateUser(Long id, UtilisateurReqDTO dto) {
 
+        Utilisateur utilisateur = utilisateurRepository.findById(id)
+                .orElseThrow(() -> new APIException("Invalid utilisateur"));
+
+
+        utilisateur.setNom(dto.getNom());
+        utilisateur.setPrenom(dto.getPrenom());
+        utilisateur.setAdresse(dto.getAdresse());
+        utilisateur.setTelephone(dto.getTelephone());
+        utilisateur.setDateNaissance(dto.getDateNaissance());
+        utilisateur.setSexe(dto.getSexe());
+        utilisateur.setLieuDeNaissance(dto.getLieuDeNaissance());
+
+
+        Set<Profile> profiles = new HashSet<>();
+        dto.getProfiles().forEach(profile -> {
+            Optional<Profile> profileDB = profilRepository.findByCode(profile.getCode());
+            profileDB.ifPresent(profiles::add);
+        });
+
+        utilisateur.setProfiles(profiles);
+
+        return utilisateurRepository.save(utilisateur);
+    }
+
+    @Override
+    public Utilisateur getUser(Long id) {
+        return utilisateurRepository.findById(id)
+                .orElseThrow(() -> new APIException("L'id est incorrect"));
+    }
+
+    @Override
+    public Response<Object> getUserPage(int page, int size, String filter) {
+
+        Page<UtilisateurResDTO> utilisateurResDTOPage;
+        BooleanBuilder builder = new BooleanBuilder();
+
+
+        if (StringUtils.isNotBlank(filter)) {
+
+            builder.andAnyOf(
+                    QUtilisateur.utilisateur.email.containsIgnoreCase(filter),
+                    QUtilisateur.utilisateur.prenom.containsIgnoreCase(filter),
+                    QUtilisateur.utilisateur.nom.containsIgnoreCase(filter),
+                    QUtilisateur.utilisateur.adresse.containsIgnoreCase(filter),
+                    QUtilisateur.utilisateur.sexe.containsIgnoreCase(filter),
+                    QUtilisateur.utilisateur.lieuDeNaissance.containsIgnoreCase(filter));
+
+        }
+
+        utilisateurResDTOPage = Objects.nonNull(builder.getValue()) ? utilisateurRepository
+                .findAll(builder.getValue(), PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")))
+                .map(utilisateurMapper::toDto)
+                : utilisateurRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id")))
+                .map(utilisateurMapper::toDto);
+
+        Response.PageMetadata pageMetadata = Response.PageMetadata.builder()
+                .size(utilisateurResDTOPage.getSize())
+                .number(utilisateurResDTOPage.getNumber())
+                .totalElements(utilisateurResDTOPage.getTotalElements())
+                .totalPages(utilisateurResDTOPage.getTotalPages())
+                .build();
+
+        return Response.ok().setPayload(utilisateurResDTOPage.getContent()).setMetadata(pageMetadata)
+                .setMessage("Liste des utilisateurs");
+
+    }
 }

@@ -9,6 +9,6 @@ import sn.ods.starterkit_spring.domain.model.other.FailedMail;
 
 
 @Repository
-public interface IFailedMailRepository extends JpaRepository<FailedMail,Long> {
+public interface FailedMailRepository extends JpaRepository<FailedMail,Long> {
 }
 

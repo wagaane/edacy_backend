@@ -12,6 +12,6 @@ import sn.ods.starterkit_spring.domain.model.utilisateur.Menu;
  */
 
 @Repository
-public interface IMenuRepository extends JpaRepository<Menu, Long> {
+public interface MenuRepository extends JpaRepository<Menu, Long> {
    // ProfileMenuSousMenu findProfileMenuSousMenuByProfileIdAndMenId(Long profileId, Long menuId);
 }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import sn.ods.starterkit_spring.application.services.interfaces.authentication.AuthenticationService;
 import sn.ods.starterkit_spring.application.services.shared.file.INotificationService;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
-import sn.ods.starterkit_spring.domain.repository.IUtilisateurRepository;
+import sn.ods.starterkit_spring.domain.repository.UtilisateurRepository;
 import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.infrastructure.config.security.jwt.JwtProvider;
 import sn.ods.starterkit_spring.infrastructure.config.security.services.LoginAttemptService;
@@ -51,7 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtProvider jwtProvider;
     private final I18nTranslate i18nTranslat;
     private final LoginAttemptService loginAttemptService;
-    private final IUtilisateurRepository utilisateurRepository;
+    private final UtilisateurRepository utilisateurRepository;
     private final PasswordEncoder encoder;
     private final INotificationService notificationService;
 

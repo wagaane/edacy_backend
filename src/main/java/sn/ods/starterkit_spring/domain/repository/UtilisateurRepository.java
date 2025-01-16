@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 
-public interface IUtilisateurRepository
+public interface UtilisateurRepository
         extends JpaRepository<Utilisateur, Long>, QuerydslPredicateExecutor<Utilisateur> {
     Optional<Utilisateur> findUtilisateurByEmail(String username);
 

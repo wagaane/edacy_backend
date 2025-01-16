@@ -13,6 +13,6 @@ import java.util.Optional;
  */
 
 @Repository
-public interface IDisposableEmailRepository extends JpaRepository<DisposableEmail,Long> {
+public interface DisposableEmailRepository extends JpaRepository<DisposableEmail,Long> {
     Optional<DisposableEmail> findByDomain(String domain);
 }
