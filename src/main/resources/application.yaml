@@ -31,8 +31,8 @@ projet:
 
 
 upload:
-  path: /Users/g2k-fs-icoulibaly/Desktop/ODS/starter-kit/docs/
-  image: /Users/g2k-fs-icoulibaly/Desktop/ODS/starter-kit/docs/
+  path: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
+  image: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
 
 
 smtp:
@@ -44,3 +44,11 @@ smtp:
 app:
   file:
     regex-splitter: '@##___@##'
+  url:
+    front: http://localhost:4200/#/auth
+
+url:
+  logo:
+    starterkit: http://localhost:8085/static/logo-image.png
+
+

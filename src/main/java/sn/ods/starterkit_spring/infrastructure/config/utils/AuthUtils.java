@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import sn.ods.starterkit_spring.domain.model.Menu;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Menu;
 import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.MenuDTO;
 import sn.ods.starterkit_spring.presentation.mappers.IMenuMapper;
 

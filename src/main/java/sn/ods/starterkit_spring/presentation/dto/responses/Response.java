@@ -17,7 +17,6 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @Builder
-
 public class Response<T> {
     private Status status;
     private T payload;

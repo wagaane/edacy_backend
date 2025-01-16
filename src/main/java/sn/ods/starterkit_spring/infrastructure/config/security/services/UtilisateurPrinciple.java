@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import sn.ods.starterkit_spring.domain.model.Utilisateur;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.MenuDTO;
 import sn.ods.starterkit_spring.presentation.dto.responses.authentication.UtilisateurInfo;
 

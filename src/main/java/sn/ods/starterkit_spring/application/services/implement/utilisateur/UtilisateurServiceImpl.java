@@ -1,20 +1,24 @@
-package sn.ods.starterkit_spring.application.usecase.services.implement;
+package sn.ods.starterkit_spring.application.services.implement.utilisateur;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sn.ods.starterkit_spring.domain.model.Utilisateur;
+
+
+import sn.ods.starterkit_spring.application.services.interfaces.utilisateur.UtilisateurService;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 import sn.ods.starterkit_spring.domain.repository.IUtilisateurRepository;
-import sn.ods.starterkit_spring.application.usecase.services.interfaces.IUserService;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @Service
-public class UtilisateurServiceImpl implements IUserService {
+@RequiredArgsConstructor
+public class UtilisateurServiceImpl implements UtilisateurService {
 
     private Map<String, String> resetTokens = new HashMap<>();
     private Map<String, Boolean> invalidatedTokens = new HashMap<>();
@@ -28,11 +32,11 @@ public class UtilisateurServiceImpl implements IUserService {
 
     private final JavaMailSender mailSender;
 
-    public UtilisateurServiceImpl(PasswordEncoder passwordEncoder, IUtilisateurRepository utilisateurRepository, JavaMailSender mailSender) {
-        this.passwordEncoder = passwordEncoder;
-        this.utilisateurRepository = utilisateurRepository;
-        this.mailSender = mailSender;
-    }
+//    public UtilisateurServiceImpl(PasswordEncoder passwordEncoder, IUtilisateurRepository utilisateurRepository, JavaMailSender mailSender) {
+//        this.passwordEncoder = passwordEncoder;
+//        this.utilisateurRepository = utilisateurRepository;
+//        this.mailSender = mailSender;
+//    }
 
     public void generatePasswordResetToken(String email) {
         String token = UUID.randomUUID().toString();
@@ -77,16 +81,16 @@ public class UtilisateurServiceImpl implements IUserService {
 
     @Override
     public Utilisateur createUser(String email, String password, String firstName,  String phoneNumber) {
-            if (utilisateurRepository.findByEmail(email) != null) {
-                throw new RuntimeException("Cet email est déjà utilisé");
-            }
+        if (utilisateurRepository.findByEmail(email) != null) {
+            throw new RuntimeException("Cet email est déjà utilisé");
+        }
 
-            Utilisateur user = new Utilisateur();
-            user.setEmail(email);
-            user.setPassword(passwordEncoder.encode(password));  // Hacher le mot de passe avant de le stocker
-            user.setNom(firstName);
+        Utilisateur user = new Utilisateur();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));  // Hacher le mot de passe avant de le stocker
+        user.setNom(firstName);
 
-            return utilisateurRepository.save(user);
+        return utilisateurRepository.save(user);
 
     }
 

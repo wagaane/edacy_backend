@@ -32,7 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
-src/main/resources/application-dev.yml
+
+### Application Configuration ###
+src/main/resources/application-dev.yaml
 src/main/resources/application-am.yaml
 logs/application.log
 .DS_Store
