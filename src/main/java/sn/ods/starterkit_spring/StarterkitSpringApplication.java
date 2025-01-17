@@ -20,7 +20,6 @@ import java.util.concurrent.Executors;
 @EnableJpaAuditing
 @EnableTransactionManagement
 
-//@ComponentScan(basePackages = {"sn.ods.starterkit_spring.infrastructure.logging"})
 public class StarterkitSpringApplication {
 
 	public static void main(String[] args) {

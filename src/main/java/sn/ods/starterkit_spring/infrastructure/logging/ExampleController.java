@@ -11,6 +11,8 @@ public class ExampleController {
     @GetMapping("/account/logoutt")
     public String logout(@RequestHeader("Authorization") String authHeader) {
         // Simuler une erreur si l'en-tête "Authorization" est manquant
-        return "Logout successful";
+        //return "Logout successful";
+        throw new RuntimeException("Required request header 'Authorization' is not present");
+
     }
 }
