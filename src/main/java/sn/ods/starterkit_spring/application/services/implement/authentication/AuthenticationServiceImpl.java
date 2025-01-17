@@ -140,7 +140,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (isValidPassword(formRequest.newPassword())) {
 
-
             Optional<Utilisateur> userOptional = utilisateurRepository.findUtilisateurByEmail(formRequest.login());
             if (userOptional.isEmpty()) {
                throw new APIException(APIMessage.ACCOUNT_NOT_FOUND);
