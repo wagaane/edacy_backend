@@ -4,10 +4,7 @@ package sn.ods.starterkit_spring.domain.model.utilisateur;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import sn.ods.starterkit_spring.domain.model.audit.Auditable;
 
 import java.time.LocalDate;
@@ -22,6 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "TD_UTILISATEUR")
 @SequenceGenerator(name = "seq_user", initialValue = 100, allocationSize = 2, sequenceName = "seq_user")
 public  class Utilisateur extends Auditable<Long> {

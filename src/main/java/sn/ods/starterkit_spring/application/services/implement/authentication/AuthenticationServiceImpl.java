@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import sn.ods.starterkit_spring.application.services.interfaces.authentication.AuthenticationService;
 import sn.ods.starterkit_spring.application.services.shared.file.INotificationService;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
-import sn.ods.starterkit_spring.domain.repository.UtilisateurRepository;
+import sn.ods.starterkit_spring.domain.repository.utilisateur.UtilisateurRepository;
 import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.infrastructure.config.security.jwt.JwtProvider;
 import sn.ods.starterkit_spring.infrastructure.config.security.services.LoginAttemptService;
@@ -30,7 +30,7 @@ import sn.ods.starterkit_spring.presentation.dto.responses.APIResponse;
 import sn.ods.starterkit_spring.presentation.dto.responses.Response;
 import sn.ods.starterkit_spring.presentation.dto.responses.Status;
 import sn.ods.starterkit_spring.presentation.dto.responses.authentication.JwtDTO;
-import sn.ods.starterkit_spring.presentation.mappers.utilisateur.UtilisateurMapper;
+import sn.ods.starterkit_spring.presentation.mappers.utilisateur.UserMapperForAdminMapper;
 
 import java.util.Optional;
 
@@ -42,7 +42,7 @@ import static sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nKeys
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
-    private final UtilisateurMapper utilisateurMapper;
+    private final UserMapperForAdminMapper userMapperForAdminMapper;
     private final JwtProvider jwtProvider;
     private final I18nTranslate i18nTranslat;
     private final LoginAttemptService loginAttemptService;
@@ -51,7 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final INotificationService notificationService;
 
     public static final String BEARER = "Bearer";
-    public static final String REFRESH_TOKEN = "Refresh token";
+   // public static final String REFRESH_TOKEN = "Refresh token";
     private static final String RESET_PASSWORD = "RESET_PASSWORD";
 
     @Override
@@ -100,7 +100,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             Optional<Utilisateur> userOptional = utilisateurRepository.findUtilisateurByEmail(formRequest.login());
             if (userOptional.isEmpty()) {
 
-                APIResponse response = APIResponse.error(new APIException("L'Utilisateur  "+ formRequest.login()+ " n'existe pas."));
+                APIResponse response = APIResponse.error(new APIException(APIMessage.ACCOUNT_NOT_FOUND));
                 return ResponseEntity.ok(response);
 
             }

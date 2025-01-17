@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sn.ods.starterkit_spring.application.services.shared.file.INotificationService;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
+import sn.ods.starterkit_spring.domain.model.utilisateur.ValidationUser;
 import sn.ods.starterkit_spring.infrastructure.config.security.jwt.JwtProvider;
 import sn.ods.starterkit_spring.infrastructure.mails.MailService;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.LoginFormDTO;
@@ -24,6 +25,7 @@ public class NotificationServiceImpl implements INotificationService {
     private static final String CREATION_COMPTE = "Création compte";
     private static final String MODIFICATION_COMPTE = "Modification compte";
     private static final String REINITIALISATION_MOT_DE_PASSE = "Réinitialisation mot de passe";
+    private static final String CODE_DE_ACTIVATION = "Votre code de activation";
     private static final String NOM_ORGANISATION = "ODS StarterKit V1";
     private final JwtProvider jwtProvider;
     private final MailService mailService;
@@ -100,6 +102,28 @@ public class NotificationServiceImpl implements INotificationService {
     @Override
     public void sendEmail(MailInfosDTO mailInfosDTO) {
         System.out.println("### send mail fonction");
+        MailInfosDTO mailInfos = new MailInfosDTO(mailInfosDTO.id(), mailInfosDTO.originalText(), mailInfosDTO.subject(), getHtmlMessage(mailInfosDTO.originalText(), urlLogoStarterKit,NOM_ORGANISATION), mailInfosDTO.destinataire());
+
+
+        mailService.sendMail(mailInfos);
+    }
+
+
+    @Override
+    public void envoyer(ValidationUser validationUser) {
+
+        String fullName = validationUser.getUser().getPrenom() + " " + validationUser.getUser().getNom();
+
+        String textMessage = """
+               Bonjour %s, <br/> Votre code d'activation est %s;.
+                A bientôt
+                """.formatted(fullName , validationUser.getCode());
+
+        MailInfosDTO mailInfosDTO = new MailInfosDTO(null, textMessage, CODE_DE_ACTIVATION, null, validationUser.getUser().getEmail());
+        sendEmail(mailInfosDTO);
+
+
+
         MailInfosDTO mailInfos = new MailInfosDTO(mailInfosDTO.id(), mailInfosDTO.originalText(), mailInfosDTO.subject(), getHtmlMessage(mailInfosDTO.originalText(), urlLogoStarterKit,NOM_ORGANISATION), mailInfosDTO.destinataire());
 
 

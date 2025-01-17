@@ -3,7 +3,7 @@ package sn.ods.starterkit_spring.presentation.dto.responses.utilisateur;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.UtilisateurReqDTO;
+import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.UserReqForAdminDTO;
 
 
 @Getter
@@ -12,7 +12,7 @@ import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.Utilisateu
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UtilisateurResDTO extends UtilisateurReqDTO {
+public class UserResForAdminDTO extends UserReqForAdminDTO {
 
     private Long id;
 }

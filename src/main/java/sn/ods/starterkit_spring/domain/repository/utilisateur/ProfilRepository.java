@@ -1,4 +1,4 @@
-package sn.ods.starterkit_spring.domain.repository;
+package sn.ods.starterkit_spring.domain.repository.utilisateur;
 
 
 
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Profile;
 
 
-import java.util.List;
 import java.util.Optional;
 
 
