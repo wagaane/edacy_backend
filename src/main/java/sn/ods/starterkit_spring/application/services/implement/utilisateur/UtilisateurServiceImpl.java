@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import sn.ods.starterkit_spring.infrastructure.config.password.PasswordGenerator
 import sn.ods.starterkit_spring.infrastructure.config.utils.UtilityClass;
 import sn.ods.starterkit_spring.presentation.dto.requests.authencation.LoginFormDTO;
 import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.UtilisateurReqDTO;
+import sn.ods.starterkit_spring.presentation.dto.responses.APIResponse;
 import sn.ods.starterkit_spring.presentation.dto.responses.Response;
 import sn.ods.starterkit_spring.presentation.dto.responses.utilisateur.UtilisateurResDTO;
 import sn.ods.starterkit_spring.presentation.mappers.utilisateur.UtilisateurMapper;

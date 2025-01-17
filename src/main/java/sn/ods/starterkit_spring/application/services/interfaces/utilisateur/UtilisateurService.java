@@ -5,6 +5,7 @@ package sn.ods.starterkit_spring.application.services.interfaces.utilisateur;
 
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 import sn.ods.starterkit_spring.presentation.dto.requests.utilisateur.UtilisateurReqDTO;
+import sn.ods.starterkit_spring.presentation.dto.responses.APIResponse;
 import sn.ods.starterkit_spring.presentation.dto.responses.Response;
 
 /**

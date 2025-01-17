@@ -27,6 +27,7 @@ public class APIResponse {
 
     private boolean success;
     private String message;
+    private Object metadata;
     private Object data;
     private String status;
     private Object errors;
