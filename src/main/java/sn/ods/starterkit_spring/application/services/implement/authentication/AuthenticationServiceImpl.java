@@ -40,7 +40,6 @@ import static sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nKeys
 @RequiredArgsConstructor
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
-
     private final AuthenticationManager authenticationManager;
     private final UserMapperForAdminMapper userMapperForAdminMapper;
     private final JwtProvider jwtProvider;
@@ -165,7 +164,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             utilisateur.setFirstLog(true);
             notificationService.sendNotificationToUserForgetPassword(
                     new LoginFormDTO(utilisateur.getEmail(), utilisateur.getPassword()), RESET_PASSWORD);
-
          return utilisateur;
 
         }
@@ -181,7 +179,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 Utilisateur utilisateur = userOptional.get();
                 if (!encoder.matches(form.password(), utilisateur.getPassword())) {
                     throw new APIException(APIMessage.PASSWORD_OLD_PASSWORD_ARE_NOT_IDENTIQUE);
-
                 }
 
                 if (encoder.matches(form.newPassword(), utilisateur.getPassword())) {

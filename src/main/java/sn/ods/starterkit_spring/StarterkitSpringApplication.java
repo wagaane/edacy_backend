@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.concurrent.Executors;
 
 @SpringBootApplication
-//@ComponentScan(basePackages = {"sn.ods.starterkit_spring.infrastructure.logging"})
 @EnableAsync
 @EnableScheduling
 @EnableJpaAuditing
