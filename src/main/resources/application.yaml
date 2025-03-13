@@ -1,23 +1,23 @@
 spring:
   profiles:
     active: dev
-server:
-
-  test:
-    database:
-      replace: none
   servlet:
     multipart:
       max-file-size: 50000MB
       max-request-size: 50000MB
-    context-path: /api/v1
+
+
+
+server:
+  servlet:
+    context-path: /api/v1/
+  port: 8085
 
 
 
 springdoc:
-  api-docs:
-    enabled: true
-    path: /v3/api-docs
+  default-consumes-media-type: application/json
+
   swagger-ui:
     enabled: true
     path: /swagger-ui.html

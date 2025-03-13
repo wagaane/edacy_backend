@@ -14,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sn.ods.starterkit_spring.application.services.interfaces.authentication.AuthenticationService;
 import sn.ods.starterkit_spring.application.services.shared.file.INotificationService;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Menu;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
+import sn.ods.starterkit_spring.domain.repository.utilisateur.MenuRepository;
 import sn.ods.starterkit_spring.domain.repository.utilisateur.UtilisateurRepository;
 import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.infrastructure.config.security.jwt.JwtProvider;
@@ -33,6 +35,7 @@ import sn.ods.starterkit_spring.presentation.dto.responses.authentication.JwtDTO
 import sn.ods.starterkit_spring.presentation.mappers.utilisateur.UserMapperForAdminMapper;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nKeys.*;
 
@@ -48,6 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UtilisateurRepository utilisateurRepository;
     private final PasswordEncoder encoder;
     private final INotificationService notificationService;
+    private final MenuRepository menuRepository;
 
     public static final String BEARER = "Bearer";
    // public static final String REFRESH_TOKEN = "Refresh token";
@@ -63,9 +67,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
         String jwt = jwtProvider.generateToken(authentication);
         String refreshToken = jwtProvider.generateRefreshToken(jwt);
-        JwtDTO response = new JwtDTO(userDetails.getUsername(), jwt, refreshToken, BEARER);
+
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(userDetails.getUsername());
+
+        Set<Menu> menues = menuRepository.findByProfiles(utilisateur.getProfiles().stream().findFirst().get());
+
+        JwtDTO response = new JwtDTO(userDetails.getUsername(), jwt, refreshToken, BEARER, menues);
         loginAttemptService.loginSucceeded(loginFormDTO.login());
         return response;
     }
@@ -88,7 +98,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new APIException(APIMessage.CONNEXION_TOKEN_INVALIDE);
         }
         String jwtRefresh = jwtProvider.generateRefreshToken(token);
-        return new  JwtDTO(jwtProvider.getUserNameFromJwtToken(token), jwtRefresh, null, BEARER);
+        return new  JwtDTO(jwtProvider.getUserNameFromJwtToken(token), jwtRefresh, null, BEARER, null);
 
     }
 

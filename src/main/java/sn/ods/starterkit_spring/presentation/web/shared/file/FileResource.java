@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 //@Tag(name = "FILE - MANAGEMENT - API", description = "Permet de charger et de télécharger des fichiers")
 @Validated
 @RequiredArgsConstructor
+@RequestMapping("/file")
 public class FileResource {
     private final IFile iFile;
 
