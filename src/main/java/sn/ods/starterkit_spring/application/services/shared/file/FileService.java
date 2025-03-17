@@ -18,7 +18,6 @@ import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.presentation.dto.responses.APIMessage;
 import sn.ods.starterkit_spring.presentation.dto.responses.FileRspDTO;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;

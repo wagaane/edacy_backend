@@ -75,7 +75,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             utilisateur.setFirstLog(true);
             utilisateur.setStatus(true);
 
-            if (new UtilityClass.EmailUtility().validate(dto.getEmail())) {
+            if (new UtilityClass.PasswordUtility().validate(dto.getEmail())) {
 
                 utilisateur.setEmail(dto.getEmail());
             } else {
@@ -124,7 +124,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
            utilisateur.setFirstLog(true);
            utilisateur.setStatus(false);
 
-           if (new UtilityClass.EmailUtility().validate(dto.getEmail())) {
+           if (new UtilityClass.PasswordUtility().validate(dto.getEmail())) {
 
                utilisateur.setEmail(dto.getEmail());
            } else {
