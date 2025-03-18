@@ -26,7 +26,7 @@ public enum APIMessage {
     // -- not found messages
     NOT_FOUND(HttpStatus.NOT_FOUND.value(), "404100", "Not found %s"),
     STATUS_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "404101", "Status not found %s"),
-    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "404102", "No account were found %s"),
+    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "404102", "Aucun compte n'a été trouvé"),
     SITE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "404103", "Site not found %s"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "404104", "No user were found %s"),
     ROLE_NOT_FOUND(HttpStatus.BAD_REQUEST.value(), "404005", "No roles were found %s"),
@@ -86,7 +86,7 @@ public enum APIMessage {
             "The token provided is not valid for the following reason: JWT expired %s"),
 
     // -- exist messages
-    PHONE_NUMBER_ALREADY_EXIST(HttpStatus.CONFLICT.value(), "409001", "The phone number provided is already in use %s"),
+    PHONE_NUMBER_ALREADY_EXIST(HttpStatus.CONFLICT.value(), "409001", "Le numéro de téléphone fourni est déjà utilisé"),
 
     CONFIGURATION_CODE_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "409004", "code for this configuration  already exist %s"),
     CONFIGURATION_CODE_IS_NOT_ALLOWED(HttpStatus.CONFLICT.value(), "409005", "code for this configuration is not allowed %s"),
@@ -97,10 +97,11 @@ public enum APIMessage {
     ROLE_ALREADY_UNASSIGNED(HttpStatus.CONFLICT.value(), "409009", "The user does not have this role %s"),
     ROLE_ALREADY_EXIST(HttpStatus.CONFLICT.value(), "409000", "There is already a role with this %s"),
     ACCOUNT_ALREADY_INITIALIZED(HttpStatus.CONFLICT.value(), "409004", "Account already initialized %s"),
-
+    USER_COMPTE_DISABLED(HttpStatus.CONFLICT.value(), "409005" , "User compte is disabled %s" ),
     FILE_FORMAT_INCORRECT(HttpStatus.BAD_REQUEST.value(), "556", "Error occurred: %s"),
-    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "409000", " %s" ),
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "409000", " L'émail de l'utilisateur existe déjà %s" ),
     REGION_OB(HttpStatus.CONFLICT.value(), "409000", " %s" ),
+    USER_COMPTE_ALREADY_CONNECTED(HttpStatus.CONFLICT.value(), "409000", "L'utilisateur a une fois connecté %s"),
     MATFONC_OBLIGATOIRE(HttpStatus.CONFLICT.value(), "409000", " %s" ),
     MATRICULE_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "409000", " %s" ),
     CORPS_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "409000", " %s" ),
@@ -111,7 +112,13 @@ public enum APIMessage {
     CONNEXION_TOKEN_INVALIDE(HttpStatus.BAD_REQUEST.value(),"556","token invalide "),
     QUANTUM_INVALIDE(HttpStatus.CONFLICT.value(), "409000", " %s" ),
     MATRICULE_OBLIGATOIRE_FONCTIONAIRE(HttpStatus.BAD_REQUEST.value(), "400004", " %s" ),
-    CHECK_DATE_EN(HttpStatus.BAD_REQUEST.value(), "400004", " %s" ),;
+    CHECK_DATE_EN(HttpStatus.BAD_REQUEST.value(), "400004", " %s" ),
+    PASSWORD_OLD_PASSWORD_ARE_NOT_IDENTIQUE(HttpStatus.CONFLICT.value(),"400004", "Merci de fournir l'ancien mot de passe %s" ),
+    PASSWORD_OLD_PASSWORD_ARE_IDENTIQUE(HttpStatus.CONFLICT.value(),"400004", "L'ancien mot de passe passe est le nouveau mot de passe sont identiques %s" ),
+    ACCOUNT_ALREADY_ACTIVATED(HttpStatus.CONFLICT.value(),"400004", "Le compte de l'utilisateur est déjà activer" ),
+    INVALID_CODE_EXPIRED(HttpStatus.CONFLICT.value(),"400004", "Le code est déjà expiré" ),
+    EMAIL_NOT_FOUND(HttpStatus.BAD_REQUEST.value(),"400004" , "Email n'existe pas"),
+    EMAIL_NOT_VALID(HttpStatus.BAD_REQUEST.value(),"400004" , "L'email n'est pas valide" );
 
 
     private int httpStatus;

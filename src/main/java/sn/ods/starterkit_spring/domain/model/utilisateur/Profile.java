@@ -31,17 +31,6 @@ public class Profile {
     @Column(name = "pro_Libelle")
     private String label;
 
-    @Column(name = "pro_type")
-    private String typeProfile;
-
-    @Column(name = "pro_type_division")
-    private String typeProfileDivision;
-
-    @Column(name = "pro_type_bureau")
-    private String typeProfileBureau;
-
-    @Column(name = "pro_type_direction")
-    private String typeProfileDirection;
 
 
 

@@ -1,6 +1,5 @@
 package sn.ods.starterkit_spring.infrastructure.config.security;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +23,8 @@ import sn.ods.starterkit_spring.infrastructure.config.security.jwt.JwtAuthTokenF
 import java.util.List;
 
 /**
+ * Spring Security configuration class for JWT-based authentication and CORS setup.
+ *
  * @author G2k R&D
  */
 @Configuration
@@ -31,54 +32,78 @@ import java.util.List;
 @EnableTransactionManagement
 @RequiredArgsConstructor
 @EnableMethodSecurity
-public class SecurityConfig  {
+public class SecurityConfig {
 
-    //private final UtilisateurDetailsSerciveImpl utilisateurDetailsSercive;
     private final JwtAuthTokenFilter jwtAuthTokenFilter;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
+    // Whitelisted endpoints that do not require authentication
     private static final RequestMatcher[] AUTH_WHITELIST = {
             new AntPathRequestMatcher("/auth/**"),
-
+           new AntPathRequestMatcher("/errors/**"),
+            new AntPathRequestMatcher("/logs/**"),
             new AntPathRequestMatcher("/swagger-ui.html"),
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/WEB-INF/classes/images/**"),
-            new AntPathRequestMatcher("/static/**"),
-
-
-
+            new AntPathRequestMatcher("/static/**")
     };
 
+    /**
+     * Configures the security filter chain.
+     *
+     * @param httpSecurity the HttpSecurity object to configure
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs during configuration
+     */
     @Bean
-    public SecurityFilterChain securiConfigFiltre(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
                 .cors(httpSecurityCorsConfigurer ->
-                        httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+                        httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource())) // Enable CORS
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(AUTH_WHITELIST).permitAll() // Allow access to whitelisted endpoints
+                        .anyRequest().authenticated()) // Require authentication for all other endpoints
                 .sessionManagement(manager -> manager
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-               // .authenticationProvider(authenticationProvider())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
-                .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Use stateless sessions
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(jwtAuthEntryPoint)) // Handle unauthorized requests
+                .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
+
         return httpSecurity.build();
     }
+
+    /**
+     * Configures CORS (Cross-Origin Resource Sharing) settings.
+     *
+     * @return the CorsConfigurationSource object
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        //Make the below setting as * to allow connection from any hos
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200","http://10.3.130.200:32135/", "http://10.42.3.184:8080/", "https://sirh-formation.sec.gouv.sn/"));
+
+        // Allow requests from specific origins
+        corsConfiguration.setAllowedOrigins(List.of(
+                "http://localhost:4200"
+        ));
+
+        // Allow all HTTP methods
         corsConfiguration.setAllowedMethods(List.of("*"));
+
+        // Allow credentials (e.g., cookies)
         corsConfiguration.setAllowCredentials(true);
+
+        // Allow all headers
         corsConfiguration.setAllowedHeaders(List.of("*"));
+
+        // Set the maximum age of the CORS preflight request cache
         corsConfiguration.setMaxAge(3600L);
+
+        // Register CORS configuration for all paths
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
+
         return source;
     }
-
-
-
 }

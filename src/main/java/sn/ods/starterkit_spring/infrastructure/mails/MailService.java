@@ -19,13 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import sn.ods.starterkit_spring.domain.model.other.FailedMail;
-import sn.ods.starterkit_spring.domain.repository.IFailedMailRepository;
+import sn.ods.starterkit_spring.domain.repository.utilisateur.FailedMailRepository;
 import sn.ods.starterkit_spring.presentation.dto.responses.mails.MailInfosDTO;
 
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Properties;
@@ -50,7 +51,7 @@ public class MailService {
     @Value("${smtp.server.from}")
     private String from;
     private static final Logger LOGGER = LoggerFactory.getLogger(MailService.class);
-    private final IFailedMailRepository failedMailRepository;
+    private final FailedMailRepository failedMailRepository;
     @Value("${upload.path}")
     private String uploadDirectory;
 
@@ -188,6 +189,7 @@ public class MailService {
             // Ajouter le contexte et le contenu HTML
             Context context = new Context();
             context.setVariable("content", mailInfosDTO.originalText());
+            context.setVariable("date",  LocalDateTime.now().getYear());
             String html = templateEngine.process("email.html", context);
             helper.setText(html, true);
 

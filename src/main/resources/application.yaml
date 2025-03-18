@@ -1,10 +1,6 @@
 spring:
   profiles:
     active: dev
-
-  test:
-    database:
-      replace: none
   servlet:
     multipart:
       max-file-size: 50000MB
@@ -12,10 +8,16 @@ spring:
 
 
 
+server:
+  servlet:
+    context-path: /api/v1/
+  port: 8085
+
+
+
 springdoc:
-  api-docs:
-    enabled: true
-    path: /v3/api-docs
+  default-consumes-media-type: application/json
+
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
@@ -29,16 +31,28 @@ projet:
 
 
 upload:
-  path: /Users/g2k-fs-akcissokho/Documents/docs/
-  image: /Users/g2k-fs-akcissokho/Documents/docs/
+  #path: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
+  #image: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
+
+  path: /Users/g2k-fs-icoulibaly/Desktop/ODS/stock-files
+  image: /Users/g2k-fs-icoulibaly/Desktop/ODS/stock-files
 
 
 smtp:
   server:
     host: "smtp.gmail.com"
     from: "cissokho.karim.abdou@gmail.com"
-    password: "zfsd kdsr ugte vrrn"
+    password: "cltg zsxc hhyr wigx"
 
 app:
   file:
     regex-splitter: '@##___@##'
+  url:
+    front: http://localhost:4200/#/auth
+
+url:
+  logo:
+    starterkit: http://localhost:8085/static/logo-image.png
+
+
+interval: PT30S

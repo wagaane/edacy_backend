@@ -1,12 +1,11 @@
 server:
-  error:
-    include-message: always
+  port: 8085
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/db_startkit?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:postgresql://localhost:5432/db_startkit?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
     username: postgres
-    password: P@ssword123
+    password: postgres
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 0
@@ -17,7 +16,7 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: create-drop
+      ddl-auto: update
     #   properties:
     #      hibernate:
     #         format_sql: true
@@ -27,9 +26,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    #username: celluleinformatique-fpt@gmail.com
     username: cissokho.karim.abdou@gmail.com
-    password: zfsd kdsr ugte vrrn
+    password: cltg zsxc hhyr wigx
     properties:
       mail:
         smtp:

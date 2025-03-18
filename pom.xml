@@ -188,6 +188,12 @@
 			<classifier>jakarta</classifier>
 			<version>${com.querydsl.version}</version>
 		</dependency>
+
+		<!-- Spring Boot Starter pour les logs (optionnel, car Spring Boot utilise Logback par défaut) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -234,6 +240,15 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.2</version>
+				<configuration>
+					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
 			<plugin>

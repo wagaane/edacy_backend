@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
-import sn.ods.starterkit_spring.domain.repository.IUtilisateurRepository;
+import sn.ods.starterkit_spring.domain.repository.utilisateur.UtilisateurRepository;
 import sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nTranslate;
 
 import static sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nKeys.CONNEXION_LOGIN_TENTATIVE;
@@ -19,7 +19,8 @@ import static sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nKeys
 @Service
 @RequiredArgsConstructor
 public class UtilisateurDetailsSerciveImpl implements UserDetailsService {
-    private final IUtilisateurRepository utilisateurRepository;
+
+    private final UtilisateurRepository utilisateurRepository;
     private final LoginAttemptService loginAttemptService;
     private final I18nTranslate i18nTranslat;
 
@@ -32,4 +33,5 @@ public class UtilisateurDetailsSerciveImpl implements UserDetailsService {
         Utilisateur utilisateur = utilisateurRepository.findUtilisateurByEmail(username).orElseThrow((() -> new UsernameNotFoundException(i18nTranslat.toTranslate(UTILISATEUR_ABSENT) + " : " + username)));
         return UtilisateurPrinciple.build(utilisateur);
     }
+
 }
