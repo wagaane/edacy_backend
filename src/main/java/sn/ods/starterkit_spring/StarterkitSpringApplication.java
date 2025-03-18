@@ -1,15 +1,19 @@
 package sn.ods.starterkit_spring;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.web.embedded.tomcat.TomcatProtocolHandlerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import sn.ods.starterkit_spring.infrastructure.logging.GlobalExceptionHandler;
 
 import java.util.concurrent.Executors;
 
@@ -19,7 +23,6 @@ import java.util.concurrent.Executors;
 @EnableScheduling
 @EnableJpaAuditing
 @EnableTransactionManagement
-
 public class StarterkitSpringApplication {
 
 	public static void main(String[] args) {

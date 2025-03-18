@@ -1,30 +1,25 @@
 package sn.ods.starterkit_spring.infrastructure.logging;
-
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
-@Data
-@Entity
+@Setter
+@Getter
+@Entity // Cette annotation est obligatoire pour que JPA reconnaisse la classe comme une entité
 public class ErrorLog {
+
+    // Getters et Setters (obligatoires pour JPA)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.SEQUENCE, generator = "seq_logs")
     private Long id;
 
-    private String path;          // Chemin de l'API (ex: "/api-v1/account/logout")
-    private String message;       // Message d'erreur (ex: "Required request header 'Authorization'...")
-    private int statusCode;       // Code de statut HTTP (ex: 500)
-    private LocalDateTime localDateTime; // Date et heure de l'erreur
+    private String message;
 
-    // Constructeurs
-    public ErrorLog() {
-        this.localDateTime = LocalDateTime.now();
-    }
+    @Lob
+    private String stackTrace;
 
-    public ErrorLog(String path, String message, int statusCode, LocalDateTime localDateTime) {
-        this.path = path;
-        this.message = message;
-        this.statusCode = statusCode;
-        this.localDateTime = localDateTime;
-    }
+    private LocalDateTime timestamp;
+
 }
