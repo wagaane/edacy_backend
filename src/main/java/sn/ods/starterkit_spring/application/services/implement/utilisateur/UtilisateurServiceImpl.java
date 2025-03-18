@@ -65,13 +65,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
             Set<Profile> profiles = new HashSet<>();
 
+            if (  utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail()).isEmpty()) {
+                throw   new APIException(APIMessage.EMAIL_ALREADY_EXISTS);
+            }
 
-            utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail())
-                    .orElseThrow(() -> new APIException(APIMessage.EMAIL_ALREADY_EXISTS));
+            if(   utilisateurRepository.findByTelephone(utilisateur.getEmail()).isPresent()) {
+                throw new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST);
+            }
 
 
-            utilisateurRepository.findByTelephone(utilisateur.getEmail())
-                    .orElseThrow(() -> new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST));
 
             dto.getProfiles().forEach(profile -> {
                 Optional<Profile> profileDB = profilRepository.findByCode(profile.getCode());
@@ -119,13 +121,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
        try {
            Utilisateur utilisateur = userMapperForUserMapper.toEntity(dto);
 
+           if (  utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail()).isEmpty()) {
+               throw   new APIException(APIMessage.EMAIL_ALREADY_EXISTS);
+           }
 
-           utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail())
-                   .orElseThrow(() -> new APIException(APIMessage.EMAIL_ALREADY_EXISTS));
+           if(   utilisateurRepository.findByTelephone(utilisateur.getEmail()).isPresent()) {
+               throw new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST);
+           }
 
 
-           utilisateurRepository.findByTelephone(utilisateur.getEmail())
-                   .orElseThrow(() -> new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST));
 
            Set<Profile> profiles = new HashSet<>();
 
