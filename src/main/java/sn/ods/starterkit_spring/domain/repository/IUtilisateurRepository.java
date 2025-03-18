@@ -15,9 +15,9 @@ public interface IUtilisateurRepository
         extends JpaRepository<Utilisateur, Long>, QuerydslPredicateExecutor<Utilisateur> {
     Optional<Utilisateur> findUtilisateurByEmail(String username);
 
-
+/*
     @Query("SELECT u FROM Utilisateur u JOIN u.profils p WHERE p.code IN :profileCodes")
     List<Utilisateur> findByProfileCodes(List<String> profileCodes);
-
+*/
 
 }

@@ -31,42 +31,37 @@ public class ValidationUserServiceImpl implements ValidationUserService {
 
     @Override
     public void validateUser(Utilisateur user) {
-
         try {
-            ValidationUser validationUser = new ValidationUser();
-
-            validationUser.setUser(user);
-
-            Instant creation = Instant.now();
-
-            validationUser.setCreation(creation);
-
-            Instant expiration = creation.plus(30, ChronoUnit.MINUTES);
-
-            validationUser.setExpiration(expiration);
-
-            Random random = new Random();
-
-            int randomInt =  random.nextInt(9999999);
-
-            String code = String.format("%06d", randomInt);
-
-
-            validationUser.setCode(code);
-
-
+            ValidationUser validationUser = buildValidationUser(user);
             ValidationUser validationSaved = validationUserRepository.save(validationUser);
-
-
             notificationService.envoyer(validationSaved);
-
-
-        }catch (Exception e){
-          throw new RuntimeException("Exception" + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Exception lors de la validation de l'utilisateur : " + e.getMessage(), e);
         }
+    }
 
+    /**
+     * Construit un objet ValidationUser avec les informations nécessaires.
+     */
+    private ValidationUser buildValidationUser(Utilisateur user) {
+        Instant creation = Instant.now();
+        Instant expiration = creation.plus(30, ChronoUnit.MINUTES);
 
+        String code = generateValidationCode();
 
+        return ValidationUser.builder()
+                .user(user)
+                .creation(creation)
+                .expiration(expiration)
+                .code(code)
+                .build();
+    }
+
+    /**
+     * Génère un code de validation à 6 chiffres.
+     */
+    private String generateValidationCode() {
+        return String.format("%06d", new Random().nextInt(999999));
     }
 
     @Override
