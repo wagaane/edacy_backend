@@ -102,9 +102,9 @@ public class UtilisateurResource {
     }
 
 
-    @Operation(summary = "Endpoint pour activer un compte creer par un utilisateur")
+    @Operation(summary = "Endpoint pour activer un compte creer par un utilisateur - Ajouter 'code'= 'chiffre' ")
     @PostMapping(path = "/activation")
-    public ResponseEntity<APIResponse> activationUser(@RequestParam(value = "code", defaultValue = "") Map<String, String> activation) {
+    public ResponseEntity<APIResponse> activationUser(@RequestBody Map<String, String> activation) {
 
         utilisateurService.activation(activation);
 

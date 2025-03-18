@@ -255,7 +255,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private String getNewPassword(Object form) {
         if (!(form instanceof InitialAuthenticationDTO || form instanceof ForgetFormDTO)) {
-            return null; // ou lever une exception si le type est invalide
+            return null;
         }
 
         String newPassword = (form instanceof InitialAuthenticationDTO)
