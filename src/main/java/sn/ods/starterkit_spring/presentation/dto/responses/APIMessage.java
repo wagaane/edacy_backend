@@ -99,7 +99,7 @@ public enum APIMessage {
     ACCOUNT_ALREADY_INITIALIZED(HttpStatus.CONFLICT.value(), "409004", "Account already initialized %s"),
     USER_COMPTE_DISABLED(HttpStatus.CONFLICT.value(), "409005" , "User compte is disabled %s" ),
     FILE_FORMAT_INCORRECT(HttpStatus.BAD_REQUEST.value(), "556", "Error occurred: %s"),
-    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "409000", " %s" ),
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "409000", " L'émail de l'utilisateur existe déjà %s" ),
     REGION_OB(HttpStatus.CONFLICT.value(), "409000", " %s" ),
     USER_COMPTE_ALREADY_CONNECTED(HttpStatus.CONFLICT.value(), "409000", "L'utilisateur a une fois connecté %s"),
     MATFONC_OBLIGATOIRE(HttpStatus.CONFLICT.value(), "409000", " %s" ),

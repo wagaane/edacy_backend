@@ -70,7 +70,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                     .orElseThrow(() -> new APIException(APIMessage.EMAIL_ALREADY_EXISTS));
 
 
-            utilisateurRepository.findByTelephone(utilisateur.getEmail())
+            utilisateurRepository.findByTelephone(utilisateur.getTelephone())
                     .orElseThrow(() -> new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST));
 
             dto.getProfiles().forEach(profile -> {
@@ -120,12 +120,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
            Utilisateur utilisateur = userMapperForUserMapper.toEntity(dto);
 
 
-           utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail())
-                   .orElseThrow(() -> new APIException(APIMessage.EMAIL_ALREADY_EXISTS));
+           if(  utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail()).isPresent()) {
+               throw new APIException(APIMessage.EMAIL_ALREADY_EXISTS);
+           }
 
+           if( utilisateurRepository.findByTelephone(utilisateur.getTelephone()).isPresent()) {
+               throw new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST);
 
-           utilisateurRepository.findByTelephone(utilisateur.getEmail())
-                   .orElseThrow(() -> new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST));
+           }
+
 
            Set<Profile> profiles = new HashSet<>();
 
@@ -147,8 +150,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
            } else {
                throw new APIException(APIMessage.EMAIL_NOT_VALID);
            }
-
-
 
           validationUserService.validateUser(utilisateur);
 
