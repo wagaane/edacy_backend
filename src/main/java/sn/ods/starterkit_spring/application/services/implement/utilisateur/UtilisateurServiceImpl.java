@@ -65,7 +65,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
             Set<Profile> profiles = new HashSet<>();
 
-            if (  utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail()).isEmpty()) {
+            if (  utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail()).isPresent()) {
                 throw   new APIException(APIMessage.EMAIL_ALREADY_EXISTS);
             }
 
