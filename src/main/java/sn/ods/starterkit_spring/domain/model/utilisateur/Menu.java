@@ -1,11 +1,13 @@
 
 package sn.ods.starterkit_spring.domain.model.utilisateur;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 import java.util.Objects;
+import java.util.Set;
 
 
 @Setter
@@ -35,7 +37,13 @@ public class Menu {
     @Column(name = "men_iconType", columnDefinition = "TEXT")
     private String menIconType;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "TR_MENU_PROFILE",
+    joinColumns = @JoinColumn(name = "prod_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_id"))
 
+    @JsonIgnore
+    private Set<Profile> profiles;
 
 
 

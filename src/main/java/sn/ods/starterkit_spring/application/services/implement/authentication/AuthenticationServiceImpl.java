@@ -14,8 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sn.ods.starterkit_spring.application.services.interfaces.authentication.AuthenticationService;
 import sn.ods.starterkit_spring.application.services.shared.file.INotificationService;
+import sn.ods.starterkit_spring.domain.model.utilisateur.Menu;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
-import sn.ods.starterkit_spring.domain.repository.UtilisateurRepository;
+import sn.ods.starterkit_spring.domain.repository.utilisateur.MenuRepository;
+import sn.ods.starterkit_spring.domain.repository.utilisateur.UtilisateurRepository;
 import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 import sn.ods.starterkit_spring.infrastructure.config.security.jwt.JwtProvider;
 import sn.ods.starterkit_spring.infrastructure.config.security.services.LoginAttemptService;
@@ -30,9 +32,10 @@ import sn.ods.starterkit_spring.presentation.dto.responses.APIResponse;
 import sn.ods.starterkit_spring.presentation.dto.responses.Response;
 import sn.ods.starterkit_spring.presentation.dto.responses.Status;
 import sn.ods.starterkit_spring.presentation.dto.responses.authentication.JwtDTO;
-import sn.ods.starterkit_spring.presentation.mappers.utilisateur.UtilisateurMapper;
+import sn.ods.starterkit_spring.presentation.mappers.utilisateur.UserMapperForAdminMapper;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nKeys.*;
 
@@ -40,18 +43,18 @@ import static sn.ods.starterkit_spring.infrastructure.config.utils.i18n.I18nKeys
 @RequiredArgsConstructor
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
-
     private final AuthenticationManager authenticationManager;
-    private final UtilisateurMapper utilisateurMapper;
+    private final UserMapperForAdminMapper userMapperForAdminMapper;
     private final JwtProvider jwtProvider;
     private final I18nTranslate i18nTranslat;
     private final LoginAttemptService loginAttemptService;
     private final UtilisateurRepository utilisateurRepository;
     private final PasswordEncoder encoder;
     private final INotificationService notificationService;
+    private final MenuRepository menuRepository;
 
     public static final String BEARER = "Bearer";
-    public static final String REFRESH_TOKEN = "Refresh token";
+   // public static final String REFRESH_TOKEN = "Refresh token";
     private static final String RESET_PASSWORD = "RESET_PASSWORD";
 
     @Override
@@ -64,9 +67,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
         String jwt = jwtProvider.generateToken(authentication);
         String refreshToken = jwtProvider.generateRefreshToken(jwt);
-        JwtDTO response = new JwtDTO(userDetails.getUsername(), jwt, refreshToken, BEARER);
+
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(userDetails.getUsername());
+
+        Set<Menu> menues = menuRepository.findByProfiles(utilisateur.getProfiles().stream().findFirst().get());
+
+        JwtDTO response = new JwtDTO(userDetails.getUsername(), jwt, refreshToken, BEARER, menues);
         loginAttemptService.loginSucceeded(loginFormDTO.login());
         return response;
     }
@@ -89,7 +98,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new APIException(APIMessage.CONNEXION_TOKEN_INVALIDE);
         }
         String jwtRefresh = jwtProvider.generateRefreshToken(token);
-        return new  JwtDTO(jwtProvider.getUserNameFromJwtToken(token), jwtRefresh, null, BEARER);
+        return new  JwtDTO(jwtProvider.getUserNameFromJwtToken(token), jwtRefresh, null, BEARER, null);
 
     }
 
@@ -100,7 +109,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             Optional<Utilisateur> userOptional = utilisateurRepository.findUtilisateurByEmail(formRequest.login());
             if (userOptional.isEmpty()) {
 
-                APIResponse response = APIResponse.error(new APIException("L'Utilisateur  "+ formRequest.login()+ " n'existe pas."));
+                APIResponse response = APIResponse.error(new APIException(APIMessage.ACCOUNT_NOT_FOUND));
                 return ResponseEntity.ok(response);
 
             }
@@ -165,7 +174,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             utilisateur.setFirstLog(true);
             notificationService.sendNotificationToUserForgetPassword(
                     new LoginFormDTO(utilisateur.getEmail(), utilisateur.getPassword()), RESET_PASSWORD);
-
          return utilisateur;
 
         }
@@ -181,7 +189,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 Utilisateur utilisateur = userOptional.get();
                 if (!encoder.matches(form.password(), utilisateur.getPassword())) {
                     throw new APIException(APIMessage.PASSWORD_OLD_PASSWORD_ARE_NOT_IDENTIQUE);
-
                 }
 
                 if (encoder.matches(form.newPassword(), utilisateur.getPassword())) {

@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import sn.ods.starterkit_spring.domain.model.other.FailedMail;
-import sn.ods.starterkit_spring.domain.repository.FailedMailRepository;
+import sn.ods.starterkit_spring.domain.repository.utilisateur.FailedMailRepository;
 import sn.ods.starterkit_spring.presentation.dto.responses.mails.MailInfosDTO;
 
 

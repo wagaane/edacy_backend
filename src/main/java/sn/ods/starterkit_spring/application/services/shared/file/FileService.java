@@ -28,6 +28,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -179,15 +180,15 @@ public class FileService implements IFile {
 
     @Override
     public List<Path> loadAll() throws APIException {
-        try {
-            Path root = Paths.get(uploadPath);
-            if (Files.exists(root)) {
-                return Files.walk(root, 1)
-                        .filter(path -> !path.equals(root))
-                        .collect(Collectors.toList());
-            }
+        Path root = Paths.get(uploadPath);
 
+        if (!Files.exists(root)) {
             return Collections.emptyList();
+        }
+
+        try (Stream<Path> paths = Files.walk(root, 1)) {
+            return paths.filter(path -> !path.equals(root))
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             throw new APIException(APIMessage.FILE_FORMAT_INCORRECT, "Could not list the files!");
         }

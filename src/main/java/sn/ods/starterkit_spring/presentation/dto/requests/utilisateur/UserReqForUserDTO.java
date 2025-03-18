@@ -2,9 +2,10 @@ package sn.ods.starterkit_spring.presentation.dto.requests.utilisateur;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import lombok.*;
-import sn.ods.starterkit_spring.domain.model.audit.Auditable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Profile;
 
 import java.time.LocalDate;
@@ -22,10 +23,11 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UtilisateurReqDTO {
+public class UserReqForUserDTO {
     private String prenom;
     private String nom;
     private String email;
+    private String password;
     private String telephone;
     private String adresse;
     private String sexe;

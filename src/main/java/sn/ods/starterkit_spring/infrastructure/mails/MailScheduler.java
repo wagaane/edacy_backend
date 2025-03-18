@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import sn.ods.starterkit_spring.domain.model.other.FailedMail;
-import sn.ods.starterkit_spring.domain.repository.FailedMailRepository;
+import sn.ods.starterkit_spring.domain.repository.utilisateur.FailedMailRepository;
 import sn.ods.starterkit_spring.presentation.dto.responses.mails.MailInfosDTO;
 
 

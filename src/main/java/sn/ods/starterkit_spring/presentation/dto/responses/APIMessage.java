@@ -115,7 +115,9 @@ public enum APIMessage {
     CHECK_DATE_EN(HttpStatus.BAD_REQUEST.value(), "400004", " %s" ),
     PASSWORD_OLD_PASSWORD_ARE_NOT_IDENTIQUE(HttpStatus.CONFLICT.value(),"400004", "Merci de fournir l'ancien mot de passe %s" ),
     PASSWORD_OLD_PASSWORD_ARE_IDENTIQUE(HttpStatus.CONFLICT.value(),"400004", "L'ancien mot de passe passe est le nouveau mot de passe sont identiques %s" ),
-    ;
+    ACCOUNT_ALREADY_ACTIVATED(HttpStatus.CONFLICT.value(),"400004", "Le compte de l'utilisateur est déjà activer" ),
+    INVALID_CODE_EXPIRED(HttpStatus.CONFLICT.value(),"400004", "Le code est déjà expiré" ),
+    EMAIL_NOT_FOUND(HttpStatus.BAD_REQUEST.value(),"400004" , "Invalid email address");
 
 
     private int httpStatus;
