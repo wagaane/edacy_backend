@@ -70,61 +70,105 @@ public class FileService implements IFile {
         }
 
         String fileName = file.getOriginalFilename();
-        String key = "";
+        Path root = Paths.get(uploadPath);
+        ensureDirectoryExists(root);
 
+        String key = checkRegexSplitter ? validateAndExtractFileCode(fileName) : "";
+        fileName = cleanFileName(fileName);
+
+        String extension = FilenameUtils.getExtension(fileName);
+        String generatedName = generateUniqueFileName(extension);
+        Path targetLocation = resolveTargetLocation(root, directory, generatedName);
+
+        return saveFile(file, targetLocation, fileName, key, checkRegexSplitter, generatedName);
+    }
+
+    /**
+     * Vérifie et crée le dossier racine s'il n'existe pas.
+     */
+    private void ensureDirectoryExists(Path root) throws APIException {
+        if (!Files.exists(root)) {
+            try {
+                Files.createDirectories(root);
+            } catch (IOException e) {
+                throw new APIException(APIMessage.FILE_FORMAT_INCORRECT, "Failed to create root directory");
+            }
+        }
+    }
+
+    /**
+     * Valide le format du fichier si checkRegexSplitter est activé et extrait le FileCode.
+     */
+    private String validateAndExtractFileCode(String fileName) throws APIException {
+        List<String> parts = Arrays.asList(fileName.split(regexSplitter));
+        if (parts.size() != 2) {
+            throw new APIException(APIMessage.FILE_FORMAT_INCORRECT,
+                    String.format("The format (%s) of the attachment files is incorrect!", fileName));
+        }
+
+        String key = parts.get(0);
+        if (!FileCode.findByName(key)) {
+            throw new APIException(APIMessage.NOT_FOUND, "FileCode " + key);
+        }
+
+        return key;
+    }
+
+    /**
+     * Nettoie et valide le nom de fichier.
+     */
+    private String cleanFileName(String fileName) throws APIException {
+        String cleanedFileName = StringUtils.cleanPath(fileName);
+        if (cleanedFileName.contains("..")) {
+            throw new APIException(APIMessage.FILE_FORMAT_INCORRECT, "Filename contains invalid path sequence " + fileName);
+        }
+        return cleanedFileName;
+    }
+
+    /**
+     * Génère un nom de fichier unique.
+     */
+    private String generateUniqueFileName(String extension) {
+        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        return UUID.randomUUID() + "_" + timestamp + "." + extension;
+    }
+
+    /**
+     * Résout l'emplacement cible du fichier.
+     */
+    private Path resolveTargetLocation(Path root, String directory, String generatedName) throws APIException {
         try {
-            Path root = Paths.get(uploadPath);
-            if (!Files.exists(root)) {
-                init();
+            if (StringUtils.hasText(directory)) {
+                Path subDirPath = root.resolve(directory);
+                Files.createDirectories(subDirPath);
+                return subDirPath.resolve(generatedName);
             }
+            return root.resolve(generatedName);
+        } catch (IOException e) {
+            throw new APIException(APIMessage.FILE_FORMAT_INCORRECT, "Failed to create target directory");
+        }
+    }
 
-            if (checkRegexSplitter) {
-                List<String> parts = Arrays.asList(fileName.split(regexSplitter));
-                if (parts.size() != 2) {
-                    throw new APIException(APIMessage.FILE_FORMAT_INCORRECT, String.format("The format (%s) of the attachments files is incorrect!", fileName));
-                }
-                key = parts.get(0);
-                fileName = StringUtils.cleanPath(parts.get(1));
+    /**
+     * Sauvegarde le fichier et retourne les métadonnées associées.
+     */
+    private FileRspDTO saveFile(MultipartFile file, Path targetLocation, String fileName, String key,
+                                boolean checkRegexSplitter, String generatedName) throws APIException {
+        try (InputStream inputStream = file.getInputStream()) {
+            Files.copy(inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-                if (!FileCode.findByName(key)) {
-                    throw new APIException(APIMessage.NOT_FOUND, "FileCode " + key);
-                }
-            }
-
-            if (fileName.contains("..")) {
-                throw new APIException(APIMessage.FILE_FORMAT_INCORRECT, "Filename contains invalid path sequence " + fileName);
-            }
-
-            String extension = FilenameUtils.getExtension(fileName);
-            InputStream inputStream = file.getInputStream();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-            String generatedName = UUID.randomUUID() + "_" + formatter.format(new Date()) + "." + extension;
-
-            FileRspDTO result = FileRspDTO.builder()
+            FileRspDTO.FileRspDTOBuilder responseBuilder = FileRspDTO.builder()
                     .originalName(fileName)
                     .fileType(file.getContentType())
                     .fileSize(file.getSize())
                     .fileCode(RandomStringUtils.randomAlphanumeric(8))
-                    .build();
-
-            Path targetLocation;
-            if (StringUtils.hasText(directory)) {
-                Path subDirPath = root.resolve(directory);
-                Files.createDirectories(subDirPath);
-                targetLocation = subDirPath.resolve(generatedName);
-                result.setGeneratedName(directory + "/" + generatedName);
-            } else {
-                targetLocation = root.resolve(generatedName);
-                result.setGeneratedName(generatedName);
-            }
-
-            Files.copy(inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING);
+                    .generatedName(targetLocation.toString());
 
             if (checkRegexSplitter) {
-                result.setFileCode(FileCode.valueOf(key.toUpperCase()).name());
+                responseBuilder.fileCode(FileCode.valueOf(key.toUpperCase()).name());
             }
 
-            return result;
+            return responseBuilder.build();
         } catch (IOException e) {
             throw new APIException(APIMessage.FILE_FORMAT_INCORRECT, "Failed to store file: " + fileName);
         }
