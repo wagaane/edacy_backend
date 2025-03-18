@@ -52,6 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder encoder;
     private final INotificationService notificationService;
     private final MenuRepository menuRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public static final String BEARER = "Bearer";
    // public static final String REFRESH_TOKEN = "Refresh token";
@@ -195,7 +196,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     throw new APIException(APIMessage.PASSWORD_OLD_PASSWORD_ARE_IDENTIQUE);
                 }
 
-                utilisateur.setPassword(encoder.encode(form.newPassword()));
+                if (new UtilityClass.PasswordUtility().validate(form.newPassword())) {
+
+                    System.out.println("password " + form.newPassword());
+
+                    utilisateur.setPassword(passwordEncoder.encode(form.newPassword()));
+                } else {
+                    throw new APIException(APIMessage.NON_STRONG_PASSWORD);
+                }
+
+             //   utilisateur.setPassword(encoder.encode(form.newPassword()));
                 Utilisateur updatedUser = utilisateurRepository.save(utilisateur);
 
                 APIResponse response = APIResponse.success(updatedUser);
@@ -220,6 +230,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Utilisateur utilisateur = getUserFromForm(form);
         if (utilisateur != null) {
 
+
+
             utilisateur.setPassword(encoder.encode(getNewPassword(form)));
 
            // utilisateur.setFirstLog(false);
@@ -240,12 +252,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return utilisateurRepository.findUtilisateurByEmail(email).orElse(null);
     }
 
+
     private String getNewPassword(Object form) {
+        if (!(form instanceof InitialAuthenticationDTO || form instanceof ForgetFormDTO)) {
+            return null;
+        }
+
+        String newPassword = (form instanceof InitialAuthenticationDTO)
+                ? ((InitialAuthenticationDTO) form).newPassword()
+                : ((ForgetFormDTO) form).newPassword();
+
+        if (!new UtilityClass.PasswordUtility().validate(newPassword)) {
+            throw new APIException(APIMessage.NON_STRONG_PASSWORD);
+        }
+
+        return newPassword;
+    }
+  /*  private String getNewPassword(Object form) {
         if (form instanceof InitialAuthenticationDTO) {
+
             return ((InitialAuthenticationDTO) form).newPassword();
         } else if (form instanceof ForgetFormDTO) {
             return ((ForgetFormDTO) form).newPassword();
         }
         return null;
     }
+
+   */
 }
