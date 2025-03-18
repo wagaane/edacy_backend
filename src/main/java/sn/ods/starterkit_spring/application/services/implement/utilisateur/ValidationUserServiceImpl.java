@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import sn.ods.starterkit_spring.application.services.interfaces.utilisateur.ValidationUserService;
-import sn.ods.starterkit_spring.application.services.shared.file.INotificationService;
+import sn.ods.starterkit_spring.application.services.implement.shared.file.INotificationService;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 import sn.ods.starterkit_spring.domain.model.utilisateur.ValidationUser;
 import sn.ods.starterkit_spring.domain.repository.utilisateur.ValidationUserRepository;

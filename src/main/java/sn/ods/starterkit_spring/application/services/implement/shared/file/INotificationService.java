@@ -1,4 +1,4 @@
-package sn.ods.starterkit_spring.application.services.shared.file;
+package sn.ods.starterkit_spring.application.services.implement.shared.file;
 
 
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;

@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import sn.ods.starterkit_spring.application.services.shared.file.INotificationService;
+import sn.ods.starterkit_spring.application.services.implement.shared.file.INotificationService;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 import sn.ods.starterkit_spring.domain.model.utilisateur.ValidationUser;
 import sn.ods.starterkit_spring.infrastructure.config.security.jwt.JwtProvider;

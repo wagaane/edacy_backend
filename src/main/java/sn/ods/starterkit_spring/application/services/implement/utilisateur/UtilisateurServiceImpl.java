@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import sn.ods.starterkit_spring.application.services.interfaces.utilisateur.UtilisateurService;
 import sn.ods.starterkit_spring.application.services.interfaces.utilisateur.ValidationUserService;
-import sn.ods.starterkit_spring.application.services.shared.file.INotificationService;
+import sn.ods.starterkit_spring.application.services.implement.shared.file.INotificationService;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Profile;
 import sn.ods.starterkit_spring.domain.model.utilisateur.QUtilisateur;
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
