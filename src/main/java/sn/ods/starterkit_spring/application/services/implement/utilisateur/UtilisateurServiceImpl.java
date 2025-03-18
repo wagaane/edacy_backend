@@ -65,6 +65,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
             Set<Profile> profiles = new HashSet<>();
 
+
+            utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail())
+                    .orElseThrow(() -> new APIException(APIMessage.EMAIL_ALREADY_EXISTS));
+
+
+            utilisateurRepository.findByTelephone(utilisateur.getEmail())
+                    .orElseThrow(() -> new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST));
+
             dto.getProfiles().forEach(profile -> {
                 Optional<Profile> profileDB = profilRepository.findByCode(profile.getCode());
                 profileDB.ifPresent(profiles::add);
@@ -75,11 +83,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             utilisateur.setFirstLog(true);
             utilisateur.setStatus(true);
 
-            if (new UtilityClass.PasswordUtility().validate(dto.getEmail())) {
+            if (new UtilityClass.EmailUtility().validate(dto.getEmail())) {
 
                 utilisateur.setEmail(dto.getEmail());
             } else {
-                throw new APIException(APIMessage.EMAIL_NOT_FOUND);
+                throw new APIException(APIMessage.EMAIL_NOT_VALID);
             }
 
 
@@ -88,9 +96,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
             utilisateur.setPassword(passwordEncoder.encode(password));
 
+
             var userSaved =  utilisateurRepository.save(utilisateur);
-
-
 
                 notificationService.sendNotificationToNewUserRegistred(
                         new LoginFormDTO(userSaved.getEmail(), password), FIRST_CONNEXION);
@@ -112,6 +119,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
        try {
            Utilisateur utilisateur = userMapperForUserMapper.toEntity(dto);
 
+
+           utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail())
+                   .orElseThrow(() -> new APIException(APIMessage.EMAIL_ALREADY_EXISTS));
+
+
+           utilisateurRepository.findByTelephone(utilisateur.getEmail())
+                   .orElseThrow(() -> new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST));
+
            Set<Profile> profiles = new HashSet<>();
 
            dto.getProfiles().forEach(profile -> {
@@ -124,11 +139,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
            utilisateur.setFirstLog(true);
            utilisateur.setStatus(false);
 
-           if (new UtilityClass.PasswordUtility().validate(dto.getEmail())) {
+
+
+           if (new UtilityClass.EmailUtility().validate(dto.getEmail())) {
 
                utilisateur.setEmail(dto.getEmail());
            } else {
-               throw new APIException(APIMessage.ACCOUNT_NOT_FOUND);
+               throw new APIException(APIMessage.EMAIL_NOT_VALID);
            }
 
 

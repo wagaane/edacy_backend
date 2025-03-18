@@ -187,11 +187,26 @@ public final class UtilityClass {
     // PASSWORD VALIDATION UTILITY
     public static final class PasswordUtility {
         private static final String PASSWORD_PATTERN =
-                "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9*$-+?_&=!%@#\\[\\]\\\"{}/]).{8,20})";
+                "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9*$-+?_&=!%@#\\[\\]\"{}/]).{8,20})";
         private final Pattern pattern;
 
         public PasswordUtility() {
             this.pattern = Pattern.compile(PASSWORD_PATTERN);
+        }
+
+        public boolean validate(String password) {
+            return pattern.matcher(password).matches();
+        }
+    }
+
+    // PASSWORD VALIDATION UTILITY
+    public static final class EmailUtility {
+        private static final String EMAIL_PATTERN =
+                "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        private final Pattern pattern;
+
+        public EmailUtility() {
+            this.pattern = Pattern.compile(EMAIL_PATTERN);
         }
 
         public boolean validate(String password) {

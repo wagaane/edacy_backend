@@ -26,9 +26,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    #username: celluleinformatique-fpt@gmail.com
     username: cissokho.karim.abdou@gmail.com
-    password: zfsd kdsr ugte vrrn
+    password: cltg zsxc hhyr wigx
     properties:
       mail:
         smtp:

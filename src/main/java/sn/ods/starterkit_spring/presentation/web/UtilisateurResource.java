@@ -39,6 +39,8 @@ public class UtilisateurResource {
     @PostMapping("/admin/add-user")
     public ResponseEntity<APIResponse> createUserFromAdmin(@RequestBody @Valid UserReqForAdminDTO dto) {
 
+
+
         Utilisateur user = utilisateurService.createUserFromAdmin(dto);
 
         APIResponse response = APIResponse.success(userMapperForAdminMapper.toDto(user));
@@ -51,7 +53,11 @@ public class UtilisateurResource {
     @PostMapping("/user/add-user")
     public ResponseEntity<APIResponse> createUserFromUser(@RequestBody @Valid UserReqForUserDTO dto) {
 
+
+        System.out.println("dto " + dto);
         Utilisateur user = utilisateurService.createUserFromUser(dto);
+
+
 
         APIResponse response = APIResponse.success(userMapperForUserMapper.toDto(user));
 

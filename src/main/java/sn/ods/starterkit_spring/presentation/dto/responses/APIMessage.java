@@ -86,7 +86,7 @@ public enum APIMessage {
             "The token provided is not valid for the following reason: JWT expired %s"),
 
     // -- exist messages
-    PHONE_NUMBER_ALREADY_EXIST(HttpStatus.CONFLICT.value(), "409001", "The phone number provided is already in use %s"),
+    PHONE_NUMBER_ALREADY_EXIST(HttpStatus.CONFLICT.value(), "409001", "Le numéro de téléphone fourni est déjà utilisé"),
 
     CONFIGURATION_CODE_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "409004", "code for this configuration  already exist %s"),
     CONFIGURATION_CODE_IS_NOT_ALLOWED(HttpStatus.CONFLICT.value(), "409005", "code for this configuration is not allowed %s"),
@@ -117,7 +117,8 @@ public enum APIMessage {
     PASSWORD_OLD_PASSWORD_ARE_IDENTIQUE(HttpStatus.CONFLICT.value(),"400004", "L'ancien mot de passe passe est le nouveau mot de passe sont identiques %s" ),
     ACCOUNT_ALREADY_ACTIVATED(HttpStatus.CONFLICT.value(),"400004", "Le compte de l'utilisateur est déjà activer" ),
     INVALID_CODE_EXPIRED(HttpStatus.CONFLICT.value(),"400004", "Le code est déjà expiré" ),
-    EMAIL_NOT_FOUND(HttpStatus.BAD_REQUEST.value(),"400004" , "Invalid email address");
+    EMAIL_NOT_FOUND(HttpStatus.BAD_REQUEST.value(),"400004" , "Email n'existe pas"),
+    EMAIL_NOT_VALID(HttpStatus.BAD_REQUEST.value(),"400004" , "L'email n'est pas valide" );
 
 
     private int httpStatus;
