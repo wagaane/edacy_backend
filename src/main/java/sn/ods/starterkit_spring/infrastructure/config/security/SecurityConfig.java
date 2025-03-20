@@ -40,6 +40,8 @@ public class SecurityConfig {
     // Whitelisted endpoints that do not require authentication
     private static final RequestMatcher[] AUTH_WHITELIST = {
             new AntPathRequestMatcher("/auth/**"),
+            new AntPathRequestMatcher("/utilisateur/user/add-user/**"),
+            new AntPathRequestMatcher("/utilisateur/activation/**"),
            new AntPathRequestMatcher("/errors/**"),
             new AntPathRequestMatcher("/logs/**"),
             new AntPathRequestMatcher("/swagger-ui.html"),

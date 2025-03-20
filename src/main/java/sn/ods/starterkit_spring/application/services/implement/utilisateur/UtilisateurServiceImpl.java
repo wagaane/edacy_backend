@@ -39,7 +39,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UtilisateurServiceImpl implements UtilisateurService {
+public class  UtilisateurServiceImpl implements UtilisateurService {
 
     private final UtilisateurRepository utilisateurRepository;
     private final INotificationService notificationService;
@@ -69,7 +69,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 throw   new APIException(APIMessage.EMAIL_ALREADY_EXISTS);
             }
 
-            if(   utilisateurRepository.findByTelephone(utilisateur.getEmail()).isPresent()) {
+            if(   utilisateurRepository.findByTelephone(utilisateur.getTelephone()).isPresent()) {
                 throw new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST);
             }
 
@@ -92,7 +92,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 throw new APIException(APIMessage.EMAIL_NOT_VALID);
             }
 
-
             String password = PasswordGenerator.generateRandomString();
             log.info("................password: = {}", password);
 
@@ -103,10 +102,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
                 notificationService.sendNotificationToNewUserRegistred(
                         new LoginFormDTO(userSaved.getEmail(), password), FIRST_CONNEXION);
-
-
-
-
 
             return userSaved;
         }catch (Exception e) {
@@ -121,14 +116,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
        try {
            Utilisateur utilisateur = userMapperForUserMapper.toEntity(dto);
 
-           if (  utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail()).isEmpty()) {
+           if (  utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail()).isPresent()) {
                throw   new APIException(APIMessage.EMAIL_ALREADY_EXISTS);
            }
 
-           if(   utilisateurRepository.findByTelephone(utilisateur.getEmail()).isPresent()) {
+           if(   utilisateurRepository.findByTelephone(utilisateur.getTelephone()).isPresent()) {
                throw new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST);
            }
-
 
 
            Set<Profile> profiles = new HashSet<>();
@@ -212,6 +206,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                     QUtilisateur.utilisateur.email.containsIgnoreCase(filter),
                     QUtilisateur.utilisateur.prenom.containsIgnoreCase(filter),
                     QUtilisateur.utilisateur.nom.containsIgnoreCase(filter),
+                    QUtilisateur.utilisateur.telephone.containsIgnoreCase(filter),
                     QUtilisateur.utilisateur.adresse.containsIgnoreCase(filter),
                     QUtilisateur.utilisateur.sexe.containsIgnoreCase(filter),
                     QUtilisateur.utilisateur.lieuDeNaissance.containsIgnoreCase(filter));

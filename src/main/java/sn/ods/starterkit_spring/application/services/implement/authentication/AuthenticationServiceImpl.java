@@ -72,6 +72,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String jwt = jwtProvider.generateToken(authentication);
         String refreshToken = jwtProvider.generateRefreshToken(jwt);
 
+        System.out.println("user: " + userDetails.getUsername());
+
         Utilisateur utilisateur = utilisateurRepository.findByEmail(userDetails.getUsername());
 
         Set<Menu> menues = menuRepository.findByProfiles(utilisateur.getProfiles().stream().findFirst().get());
