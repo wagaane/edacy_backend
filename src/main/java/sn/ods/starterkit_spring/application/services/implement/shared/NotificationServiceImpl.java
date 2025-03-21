@@ -115,7 +115,7 @@ public class NotificationServiceImpl implements INotificationService {
         String fullName = validationUser.getUser().getPrenom() + " " + validationUser.getUser().getNom();
 
         String textMessage = """
-               Bonjour %s, <br/> Votre code d'activation est %s;.
+               Bonjour %s, Votre code d'activation est  <span  style="color: #3498DB;"> %s;</span> <br/> .
                 A bientôt
                 """.formatted(fullName , validationUser.getCode());
 

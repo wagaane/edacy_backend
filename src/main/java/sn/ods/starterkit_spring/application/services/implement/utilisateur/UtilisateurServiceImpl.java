@@ -51,7 +51,6 @@ public class  UtilisateurServiceImpl implements UtilisateurService {
     private final ProfilRepository profilRepository;
 
     public static final String FIRST_CONNEXION = "FIRST_CONNEXION";
-    private static final String BLANK = " ";
 
     private final PasswordEncoder passwordEncoder;
 
@@ -72,8 +71,6 @@ public class  UtilisateurServiceImpl implements UtilisateurService {
             if(   utilisateurRepository.findByTelephone(utilisateur.getTelephone()).isPresent()) {
                 throw new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST);
             }
-
-
 
             dto.getProfiles().forEach(profile -> {
                 Optional<Profile> profileDB = profilRepository.findByCode(profile.getCode());

@@ -8,8 +8,11 @@ import sn.ods.starterkit_spring.application.services.implement.shared.file.INoti
 import sn.ods.starterkit_spring.domain.model.utilisateur.Utilisateur;
 import sn.ods.starterkit_spring.domain.model.utilisateur.ValidationUser;
 import sn.ods.starterkit_spring.domain.repository.utilisateur.ValidationUserRepository;
+import sn.ods.starterkit_spring.infrastructure.config.exceptions.APIException;
 
+import java.security.SecureRandom;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
@@ -32,7 +35,13 @@ public class ValidationUserServiceImpl implements ValidationUserService {
     @Override
     public void validateUser(Utilisateur user) {
         try {
+
+
             ValidationUser validationUser = buildValidationUser(user);
+
+            if(Instant.now().isAfter(validationUser.getExpiration())){
+                throw new APIException("Le token est expiré");
+            }
             ValidationUser validationSaved = validationUserRepository.save(validationUser);
             notificationService.envoyer(validationSaved);
         } catch (Exception e) {
@@ -61,7 +70,7 @@ public class ValidationUserServiceImpl implements ValidationUserService {
      * Génère un code de validation à 6 chiffres.
      */
     private String generateValidationCode() {
-        return String.format("%06d", new Random().nextInt(999999));
+        return String.format("%06d", new SecureRandom().nextInt(999999));
     }
 
     @Override
