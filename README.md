@@ -14,6 +14,6 @@
 
 ### 1. Cloner le dépôt
 
-```bash git https://github.com/wagaane/edacy.git ```
+```bash git https://github.com/wagaane/edacy_backend.git ```
 
 # edacy_
