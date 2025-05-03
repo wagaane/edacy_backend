@@ -1,12 +1,12 @@
 # task_app
 
 ---
-### Backend (Flutter)
+### Backend
 - API REST simple (GET, POST, PUT, DELETE)
 - Réponses JSON
 - CORS activé pour le mobile
 - DB postgres
-- pensez a modifier le fichier de comfiguration pour l'adapter aux information de votre base.
+- pensez a modifier le fichier de configuration pour l'adapter aux information de votre base.
 
 ---
 
@@ -16,4 +16,3 @@
 
 ```bash git https://github.com/wagaane/edacy_backend.git ```
 
-# edacy_
