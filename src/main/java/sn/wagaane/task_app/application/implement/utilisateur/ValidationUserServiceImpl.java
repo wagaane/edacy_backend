@@ -1,10 +1,10 @@
-package sn.wagaane.task_app.application.services.implement.utilisateur;
+package sn.wagaane.task_app.application.implement.utilisateur;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import sn.wagaane.task_app.application.services.interfaces.utilisateur.ValidationUserService;
-import sn.wagaane.task_app.application.services.implement.shared.file.INotificationService;
+import sn.wagaane.task_app.application.interfaces.utilisateur.ValidationUserService;
+import sn.wagaane.task_app.application.implement.shared.file.INotificationService;
 import sn.wagaane.task_app.domain.model.utilisateur.Utilisateur;
 import sn.wagaane.task_app.domain.model.utilisateur.ValidationUser;
 import sn.wagaane.task_app.domain.repository.utilisateur.ValidationUserRepository;

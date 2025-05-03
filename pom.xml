@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>sn.ods</groupId>
-	<artifactId>starterkit-spring</artifactId>
+	<artifactId>task_app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>starterkit-spring</name>

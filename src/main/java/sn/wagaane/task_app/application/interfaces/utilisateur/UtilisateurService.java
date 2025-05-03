@@ -1,4 +1,4 @@
-package sn.wagaane.task_app.application.services.interfaces.utilisateur;
+package sn.wagaane.task_app.application.interfaces.utilisateur;
 
 
 
@@ -19,9 +19,6 @@ import java.util.Map;
 public interface UtilisateurService {
 
 
-    Utilisateur createUserFromAdmin(UserReqForAdminDTO dto);
-    Utilisateur createUserFromUser(UserReqForUserDTO dto);
-    Utilisateur updateUser(Long id, UserReqForAdminDTO dto);
     Utilisateur getUser(Long id);
 
     Response<Object> getUserPage(int page, int size, String filter);

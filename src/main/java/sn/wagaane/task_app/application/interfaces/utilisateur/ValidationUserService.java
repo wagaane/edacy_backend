@@ -1,4 +1,4 @@
-package sn.wagaane.task_app.application.services.interfaces.utilisateur;
+package sn.wagaane.task_app.application.interfaces.utilisateur;
 
 import sn.wagaane.task_app.domain.model.utilisateur.Utilisateur;
 import sn.wagaane.task_app.domain.model.utilisateur.ValidationUser;

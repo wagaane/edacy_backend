@@ -5,7 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.wagaane.task_app.application.services.interfaces.utilisateur.UtilisateurService;
+import sn.wagaane.task_app.application.interfaces.utilisateur.UtilisateurService;
 import sn.wagaane.task_app.domain.model.utilisateur.Utilisateur;
 import sn.wagaane.task_app.presentation.dto.requests.utilisateur.UserReqForAdminDTO;
 import sn.wagaane.task_app.presentation.dto.requests.utilisateur.UserReqForUserDTO;
@@ -35,48 +35,9 @@ public class UtilisateurResource {
 
 
 
-    @Operation(summary = "Endpoint permetant de faire l'ajout  d'un  nouveau  utilisateur")
-    @PostMapping("/admin/add-user")
-    public ResponseEntity<APIResponse> createUserFromAdmin(@RequestBody @Valid UserReqForAdminDTO dto) {
 
 
 
-        Utilisateur user = utilisateurService.createUserFromAdmin(dto);
-
-        APIResponse response = APIResponse.success(userMapperForAdminMapper.toDto(user));
-
-        return ResponseEntity.ok(response);
-    }
-
-
-    @Operation(summary = "Endpoint permetant de faire l'ajout  d'un  nouveau  utilisateur")
-    @PostMapping("/user/add-user")
-    public ResponseEntity<APIResponse> createUserFromUser(@RequestBody @Valid UserReqForUserDTO dto) {
-
-
-        System.out.println("dto " + dto);
-        Utilisateur user = utilisateurService.createUserFromUser(dto);
-
-
-
-        APIResponse response = APIResponse.success(userMapperForUserMapper.toDto(user));
-
-        return ResponseEntity.ok(response);
-    }
-
-
-
-
-    @Operation(summary = "Endpoint permetant de faire une  modification  d'un   utilisateur à partir de  son id fourni")
-    @PutMapping("/update-user/{id}")
-    public ResponseEntity<APIResponse> updateUser(@PathVariable("id")Long id, @RequestBody @Valid UserReqForAdminDTO dto) {
-
-        Utilisateur user = utilisateurService.updateUser(id, dto);
-
-        APIResponse response = APIResponse.success(userMapperForAdminMapper.toDto(user));
-
-        return ResponseEntity.ok(response);
-    }
 
 
     @Operation(summary = "Endpoint pour récupérer  un   utilisateur à partir de  son id fourni")

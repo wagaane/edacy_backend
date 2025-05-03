@@ -8,11 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import sn.wagaane.task_app.application.services.interfaces.authentication.AuthenticationService;
+import sn.wagaane.task_app.application.interfaces.authentication.AuthenticationService;
+import sn.wagaane.task_app.infrastructure.Notification.INotification;
 import sn.wagaane.task_app.presentation.dto.requests.authencation.ForgetFormDTO;
 import sn.wagaane.task_app.presentation.dto.requests.authencation.InitialAuthenticationDTO;
 import sn.wagaane.task_app.presentation.dto.requests.authencation.LoginFormDTO;
 import sn.wagaane.task_app.presentation.dto.requests.authencation.ResetOrForgetFormDTO;
+import sn.wagaane.task_app.presentation.dto.requests.task_app.RegisterRequest;
 import sn.wagaane.task_app.presentation.dto.responses.APIResponse;
 import sn.wagaane.task_app.presentation.dto.responses.authentication.JwtDTO;
 
@@ -26,13 +28,22 @@ public class AuthentificationController {
     private final AuthenticationService iAuthentification;
 
    private   final PasswordEncoder encoder;
+   private final INotification notification;
 
 
     @PostMapping("/login")
     public  ResponseEntity<APIResponse> authenticateUser(@Valid @RequestBody LoginFormDTO loginRequest) {
 
         APIResponse response = APIResponse
-                .success(iAuthentification.singIn(loginRequest));
+                .success(iAuthentification.login(loginRequest));
+        return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping("/register")
+    public  ResponseEntity<APIResponse> register(@RequestBody RegisterRequest registerRequest) {
+        APIResponse response = APIResponse
+                .success(iAuthentification.register(registerRequest));
         return ResponseEntity.ok(response);
     }
 

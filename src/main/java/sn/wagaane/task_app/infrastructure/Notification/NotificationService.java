@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import sn.wagaane.task_app.infrastructure.Notification.model.Notification;
-import sn.ods.starterkit_spring.infrastructure.Notification.model.QNotification;
+import sn.wagaane.task_app.infrastructure.Notification.model.QNotification;
 import sn.wagaane.task_app.presentation.dto.responses.Response;
 
 
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static sn.ods.starterkit_spring.infrastructure.Notification.model.QNotification.notification;
+import static sn.wagaane.task_app.infrastructure.Notification.model.QNotification.notification;
 
 
 @Service

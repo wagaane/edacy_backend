@@ -1,11 +1,11 @@
 server:
-  port: 8085
+  port: 8000
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/db_startkit?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:postgresql://localhost:5432/task_app?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true
     username: postgres
-    password: P@ssword123
+    password: root
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 0
@@ -25,9 +25,8 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    port: 587
-    username: cissokho.karim.abdou@gmail.com
-    password: cltg zsxc hhyr wigx
+    username: 'ablayefaye9725@gmail.com'
+    password: 'ovun lsxm arwo vwzz'
     properties:
       mail:
         smtp:

@@ -14,7 +14,6 @@ import java.util.Optional;
 public interface UtilisateurRepository
         extends JpaRepository<Utilisateur, Long>, QuerydslPredicateExecutor<Utilisateur> {
     Optional<Utilisateur> findUtilisateurByEmail(String username);
-    Optional<Utilisateur> findByTelephone(String telephone);
 
 
     @Query("SELECT u FROM Utilisateur u JOIN u.profiles p WHERE p.code IN :profileCodes")

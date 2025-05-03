@@ -17,10 +17,10 @@ import java.util.concurrent.Executors;
 @EnableScheduling
 @EnableJpaAuditing
 @EnableTransactionManagement
-public class StarterkitSpringApplication {
+public class TaskAppSpringApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StarterkitSpringApplication.class, args);
+		SpringApplication.run(TaskAppSpringApplication.class, args);
 	}
 
 	@Bean

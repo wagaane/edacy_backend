@@ -6,13 +6,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import sn.wagaane.task_app.domain.model.audit.Auditable;
-
-import java.time.LocalDate;
+import sn.wagaane.task_app.domain.model.task_app.Task;
 
 import java.util.HashSet;
-
 import java.util.Set;
-
 
 @Getter
 @Setter
@@ -27,57 +24,25 @@ public  class Utilisateur extends Auditable<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
     @Column(nullable = false, updatable = false, unique = true)
     private Long id;
-
-    @Size(max = 50)
-    @Column(name = "user_firstName")
+    @Column(name = "user_prenom", length = 50, nullable = false)
     private String prenom;
-
-    @Size(max = 25)
-    @Column(name = "user_lastName", nullable = false)
+    @Column(name = "user_nom", nullable = false, length = 50)
     private String nom;
-
-    @Size(max = 200)
-    @Column(name = "user_pmail")
+    @Column(name = "user_email", nullable = false, length = 50, unique = true)
     private String email;
-
-
-    @Column(name = "user_password")
+    @Column(name = "user_password", nullable = false, length = 100)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    // ignoring password à revoir
     private String password;
-
-
-
     @Column(name = "Uti_FirstLog", columnDefinition = "boolean default true")
     private Boolean firstLog = true;
-
     @Column(name = "user_status", columnDefinition = "boolean default true")
     private Boolean status;
-
-
-    @Size(max = 20)
-    @Column(name = "user_phoneNumber")
-    private String telephone;
-
-    @Size(max = 150)
-    @Column(name = "user_adresse")
-    private String adresse;
-
-    @Size(max = 10)
-    @Column(name = "user_sexe")
-    private String sexe;
-
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "TR_USER_PROFILE",  joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "profile_id"))
-    private Set<Profile> profiles = new HashSet<>();
+    @JoinTable(name = "TR_UTILISATEUR_PROFILE",joinColumns = @JoinColumn(name = "compte__id"), inverseJoinColumns = @JoinColumn(name = "profile_id"))
+    protected Set<Profile> profiles = new HashSet<>();
 
-    @Size(max = 100)
-    @Column(name = "user_lieu_naissance")
-    private String lieuDeNaissance;
-
-    @Column(name = "user_date_naissance")
-    private LocalDate dateNaissance;
-
-
+    @Column(name = "user_deleted", nullable = false)
+    private boolean deleted = false;
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Task> tasks = new HashSet<>();
 }

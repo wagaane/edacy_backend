@@ -26,11 +26,5 @@ public class UtilisateurReqDTO {
     protected String prenom;
     protected String nom;
     protected String email;
-    protected String telephone;
-    protected String adresse;
-    protected String sexe;
-    protected Set<Profile> profiles;
-    protected String lieuDeNaissance;
-    protected LocalDate dateNaissance;
 
 }

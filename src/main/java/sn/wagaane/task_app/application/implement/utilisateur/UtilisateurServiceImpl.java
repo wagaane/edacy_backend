@@ -1,4 +1,4 @@
-package sn.wagaane.task_app.application.services.implement.utilisateur;
+package sn.wagaane.task_app.application.implement.utilisateur;
 
 import com.querydsl.core.BooleanBuilder;
 import jakarta.transaction.Transactional;
@@ -12,11 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-import sn.wagaane.task_app.application.services.interfaces.utilisateur.UtilisateurService;
-import sn.wagaane.task_app.application.services.interfaces.utilisateur.ValidationUserService;
-import sn.wagaane.task_app.application.services.implement.shared.file.INotificationService;
+import sn.wagaane.task_app.application.interfaces.utilisateur.UtilisateurService;
+import sn.wagaane.task_app.application.interfaces.utilisateur.ValidationUserService;
+import sn.wagaane.task_app.application.implement.shared.file.INotificationService;
 import sn.wagaane.task_app.domain.model.utilisateur.Profile;
-import sn.ods.starterkit_spring.domain.model.utilisateur.QUtilisateur;
+import sn.wagaane.task_app.domain.model.utilisateur.QUtilisateur;
 import sn.wagaane.task_app.domain.model.utilisateur.Utilisateur;
 import sn.wagaane.task_app.domain.model.utilisateur.ValidationUser;
 import sn.wagaane.task_app.domain.repository.utilisateur.ProfilRepository;
@@ -56,135 +56,6 @@ public class  UtilisateurServiceImpl implements UtilisateurService {
 
 
     @Override
-    @Transactional
-    public Utilisateur createUserFromAdmin(UserReqForAdminDTO dto) {
-
-        try {
-            Utilisateur utilisateur = userMapperForAdminMapper.toEntity(dto);
-
-            Set<Profile> profiles = new HashSet<>();
-
-            if (  utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail()).isPresent()) {
-                throw   new APIException(APIMessage.EMAIL_ALREADY_EXISTS);
-            }
-
-            if(   utilisateurRepository.findByTelephone(utilisateur.getTelephone()).isPresent()) {
-                throw new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST);
-            }
-
-            dto.getProfiles().forEach(profile -> {
-                Optional<Profile> profileDB = profilRepository.findByCode(profile.getCode());
-                profileDB.ifPresent(profiles::add);
-            });
-
-            utilisateur.setProfiles(profiles);
-
-            utilisateur.setFirstLog(true);
-            utilisateur.setStatus(true);
-
-            if (new UtilityClass.EmailUtility().validate(dto.getEmail())) {
-
-                utilisateur.setEmail(dto.getEmail());
-            } else {
-                throw new APIException(APIMessage.EMAIL_NOT_VALID);
-            }
-
-            String password = PasswordGenerator.generateRandomString();
-            log.info("................password: = {}", password);
-
-            utilisateur.setPassword(passwordEncoder.encode(password));
-
-
-            var userSaved =  utilisateurRepository.save(utilisateur);
-
-                notificationService.sendNotificationToNewUserRegistred(
-                        new LoginFormDTO(userSaved.getEmail(), password), FIRST_CONNEXION);
-
-            return userSaved;
-        }catch (Exception e) {
-            throw new RuntimeException("Exception: " + e.getMessage());
-        }
-
-
-    }
-
-    @Override
-    public Utilisateur createUserFromUser(UserReqForUserDTO dto) {
-       try {
-           Utilisateur utilisateur = userMapperForUserMapper.toEntity(dto);
-
-           if (  utilisateurRepository.findUtilisateurByEmail(utilisateur.getEmail()).isPresent()) {
-               throw   new APIException(APIMessage.EMAIL_ALREADY_EXISTS);
-           }
-
-           if(   utilisateurRepository.findByTelephone(utilisateur.getTelephone()).isPresent()) {
-               throw new APIException(APIMessage.PHONE_NUMBER_ALREADY_EXIST);
-           }
-
-
-           Set<Profile> profiles = new HashSet<>();
-
-           dto.getProfiles().forEach(profile -> {
-               Optional<Profile> profileDB = profilRepository.findByCode(profile.getCode());
-               profileDB.ifPresent(profiles::add);
-           });
-
-           utilisateur.setProfiles(profiles);
-
-           utilisateur.setFirstLog(true);
-           utilisateur.setStatus(false);
-
-
-
-           if (new UtilityClass.EmailUtility().validate(dto.getEmail())) {
-
-               utilisateur.setEmail(dto.getEmail());
-           } else {
-               throw new APIException(APIMessage.EMAIL_NOT_VALID);
-           }
-
-
-
-          validationUserService.validateUser(utilisateur);
-
-          return utilisateurRepository.save(utilisateur);
-       }catch (Exception e) {
-         throw new RuntimeException("Exception: " + e.getMessage());
-       }
-    }
-
-    @Override
-    public Utilisateur updateUser(Long id, UserReqForAdminDTO dto) {
-
-       try {
-           Utilisateur utilisateur = utilisateurRepository.findById(id)
-                   .orElseThrow(() -> new APIException(APIMessage.ACCOUNT_NOT_FOUND));
-
-
-           utilisateur.setNom(dto.getNom());
-           utilisateur.setPrenom(dto.getPrenom());
-           utilisateur.setAdresse(dto.getAdresse());
-           utilisateur.setTelephone(dto.getTelephone());
-           utilisateur.setDateNaissance(dto.getDateNaissance());
-           utilisateur.setSexe(dto.getSexe());
-           utilisateur.setLieuDeNaissance(dto.getLieuDeNaissance());
-
-
-           Set<Profile> profiles = new HashSet<>();
-           dto.getProfiles().forEach(profile -> {
-               Optional<Profile> profileDB = profilRepository.findByCode(profile.getCode());
-               profileDB.ifPresent(profiles::add);
-           });
-
-           utilisateur.setProfiles(profiles);
-
-           return utilisateurRepository.save(utilisateur);
-       }catch (Exception e) {
-           throw new RuntimeException("Exception: " + e.getMessage());
-       }
-    }
-
-    @Override
     public Utilisateur getUser(Long id) {
         return utilisateurRepository.findById(id)
                 .orElseThrow(() -> new APIException(APIMessage.ACCOUNT_NOT_FOUND));
@@ -202,11 +73,8 @@ public class  UtilisateurServiceImpl implements UtilisateurService {
             builder.andAnyOf(
                     QUtilisateur.utilisateur.email.containsIgnoreCase(filter),
                     QUtilisateur.utilisateur.prenom.containsIgnoreCase(filter),
-                    QUtilisateur.utilisateur.nom.containsIgnoreCase(filter),
-                    QUtilisateur.utilisateur.telephone.containsIgnoreCase(filter),
-                    QUtilisateur.utilisateur.adresse.containsIgnoreCase(filter),
-                    QUtilisateur.utilisateur.sexe.containsIgnoreCase(filter),
-                    QUtilisateur.utilisateur.lieuDeNaissance.containsIgnoreCase(filter));
+                    QUtilisateur.utilisateur.nom.containsIgnoreCase(filter)
+            );
 
         }
 

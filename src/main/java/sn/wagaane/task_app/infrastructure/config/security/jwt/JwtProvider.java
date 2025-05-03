@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import sn.wagaane.task_app.infrastructure.config.security.services.UtilisateurPrinciple;
 import sn.wagaane.task_app.presentation.dto.responses.mails.MailConnexionInfosDTO;
 
-
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -81,4 +80,5 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(
                 jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
+
 }

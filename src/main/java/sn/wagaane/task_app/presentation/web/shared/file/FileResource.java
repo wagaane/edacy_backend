@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import sn.wagaane.task_app.application.services.implement.shared.file.IFile;
+import sn.wagaane.task_app.application.implement.shared.file.IFile;
 import sn.wagaane.task_app.infrastructure.config.exceptions.APIException;
 import sn.wagaane.task_app.presentation.dto.responses.APIResponse;
 import sn.wagaane.task_app.presentation.dto.responses.FileRspDTO;

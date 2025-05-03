@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,15 +18,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import sn.wagaane.task_app.infrastructure.config.security.services.UtilisateurDetailsSerciveImpl;
 import sn.wagaane.task_app.infrastructure.config.utils.AuthUtils;
 
-
 import java.io.IOException;
 
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
-
+    private static final Logger LOGGER = LogManager.getLogger(JwtAuthTokenFilter.class);
     private final JwtProvider tokenProvider;
     private final UtilisateurDetailsSerciveImpl utilisateurDetailsSercive;
 
@@ -47,7 +47,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-          log.error(e.getMessage(), e);
+            LOGGER.log(Level.valueOf("context"), e);
         }
 
         filterChain.doFilter(request, response);

@@ -1,4 +1,4 @@
 package sn.wagaane.task_app.presentation.dto.requests.task_app;
 
-public class OtpRequest {
+public record OtpRequest(String email, String otp) {
 }

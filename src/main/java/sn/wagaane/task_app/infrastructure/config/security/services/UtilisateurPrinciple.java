@@ -12,7 +12,6 @@ import sn.wagaane.task_app.domain.model.utilisateur.Utilisateur;
 import sn.wagaane.task_app.presentation.dto.requests.utilisateur.MenuDTO;
 import sn.wagaane.task_app.presentation.dto.responses.authentication.UtilisateurInfo;
 
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -77,9 +76,9 @@ public class UtilisateurPrinciple implements UserDetails {
         //Set<MenuDTO> menus = AuthUtils.getMenusOfUtilisateur(menuOptional.get());
 
 
-        UtilisateurInfo utilisateurInfo = new UtilisateurInfo(user.getId(), user.getEmail(), user.getPrenom(), user.getNom() ,user.getProfiles(),user.getStatus());
+        UtilisateurInfo compteInfo = new UtilisateurInfo(user.getId(), user.getEmail() , user.getPrenom(), user.getNom(), user.getProfiles(),user.getStatus());
         return UtilisateurPrinciple.builder()
-                .utilisateurInfo(utilisateurInfo)
+                .utilisateurInfo(compteInfo)
                 .password(user.getPassword())
                 .authorities(authorities)
                 .build();

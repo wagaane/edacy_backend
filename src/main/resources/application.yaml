@@ -11,7 +11,6 @@ spring:
 server:
   servlet:
     context-path: /api/v1/
-  port: 8085
 
 
 
@@ -31,18 +30,15 @@ projet:
 
 
 upload:
-  #path: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
-  #image: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
-
-  path: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
-  image: /Users/g2k-fs-akcissokho/Documents/docs/uploads/starter-kits
+  path: /Users/macbook/Desktop/edacy/task_app_back/uploads/
+  image: /Users/macbook/Desktop/edacy/task_app_back/uploads/
 
 
 smtp:
   server:
     host: "smtp.gmail.com"
-    from: "cissokho.karim.abdou@gmail.com"
-    password: "cltg zsxc hhyr wigx"
+    from: "ablayefaye9725@gmail.com"
+    password: "ovun lsxm arwo vwzz"
 
 app:
   file:
@@ -54,5 +50,6 @@ url:
   logo:
     starterkit: http://localhost:8085/static/logo-image.png
 
-
+otp:
+  expiration: 30
 interval: PT30S

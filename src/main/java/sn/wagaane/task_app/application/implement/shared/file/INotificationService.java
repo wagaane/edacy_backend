@@ -1,4 +1,4 @@
-package sn.wagaane.task_app.application.services.implement.shared.file;
+package sn.wagaane.task_app.application.implement.shared.file;
 
 
 import sn.wagaane.task_app.domain.model.utilisateur.Utilisateur;
@@ -12,6 +12,7 @@ public interface INotificationService {
     void sendNotificationToNewUserRegistredByAdmin(LoginFormDTO loginFormDTO, String action);
     void sendNotificationToUserEdited(LoginFormDTO loginFormDTO, String action);
     void sendNotificationToUserForgetPassword(LoginFormDTO loginFormDTO, String action);
+    void sendOtpCodeToRegisteredUser(String email);
     void sendEmail(MailInfosDTO mailInfosDTO);
     void sendNotificationStatut(Utilisateur utilisateur);
 

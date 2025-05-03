@@ -1,4 +1,4 @@
-package sn.wagaane.task_app.application.services.implement.authentication;
+package sn.wagaane.task_app.application.implement.authentication;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +12,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sn.wagaane.task_app.application.services.interfaces.authentication.AuthenticationService;
-import sn.wagaane.task_app.application.services.implement.shared.file.INotificationService;
+import sn.wagaane.task_app.application.interfaces.authentication.AuthenticationService;
+import sn.wagaane.task_app.application.implement.shared.file.INotificationService;
+import sn.wagaane.task_app.domain.enums.ProfileEnum;
 import sn.wagaane.task_app.domain.model.utilisateur.Menu;
+import sn.wagaane.task_app.domain.model.utilisateur.Profile;
 import sn.wagaane.task_app.domain.model.utilisateur.Utilisateur;
 import sn.wagaane.task_app.domain.repository.utilisateur.MenuRepository;
+import sn.wagaane.task_app.domain.repository.utilisateur.ProfilRepository;
 import sn.wagaane.task_app.domain.repository.utilisateur.UtilisateurRepository;
 import sn.wagaane.task_app.infrastructure.config.exceptions.APIException;
 import sn.wagaane.task_app.infrastructure.config.security.jwt.JwtProvider;
@@ -27,13 +30,16 @@ import sn.wagaane.task_app.presentation.dto.requests.authencation.ForgetFormDTO;
 import sn.wagaane.task_app.presentation.dto.requests.authencation.InitialAuthenticationDTO;
 import sn.wagaane.task_app.presentation.dto.requests.authencation.LoginFormDTO;
 import sn.wagaane.task_app.presentation.dto.requests.authencation.ResetOrForgetFormDTO;
+import sn.wagaane.task_app.presentation.dto.requests.task_app.RegisterRequest;
 import sn.wagaane.task_app.presentation.dto.responses.APIMessage;
 import sn.wagaane.task_app.presentation.dto.responses.APIResponse;
 import sn.wagaane.task_app.presentation.dto.responses.Response;
 import sn.wagaane.task_app.presentation.dto.responses.Status;
 import sn.wagaane.task_app.presentation.dto.responses.authentication.JwtDTO;
 import sn.wagaane.task_app.presentation.mappers.utilisateur.UserMapperForAdminMapper;
+import sn.wagaane.task_app.presentation.mappers.utilisateur.UtilisateurMapper;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,10 +59,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final INotificationService notificationService;
     private final MenuRepository menuRepository;
     private final PasswordEncoder passwordEncoder;
+    private  final UtilisateurMapper utilisateurMapper;
 
     public static final String BEARER = "Bearer";
    // public static final String REFRESH_TOKEN = "Refresh token";
     private static final String RESET_PASSWORD = "RESET_PASSWORD";
+    private final ProfilRepository profilRepository;
 
     @Override
     public JwtDTO singIn(LoginFormDTO loginFormDTO) {
@@ -82,6 +90,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         loginAttemptService.loginSucceeded(loginFormDTO.login());
         return response;
     }
+ @Override
+    public Response<Object> login(LoginFormDTO loginFormDTO) {
+        Authentication authentication = authenticateUser(loginFormDTO);
+        if (authentication == null) {
+
+            return Response.exception().setMessage("Information de connection invalides.");
+
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        String jwt = jwtProvider.generateToken(authentication);
+        String refreshToken = jwtProvider.generateRefreshToken(jwt);
+
+        System.out.println("user: " + userDetails.getUsername());
+
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(userDetails.getUsername());
+
+        Set<Menu> menues = menuRepository.findByProfiles(utilisateur.getProfiles().stream().findFirst().get());
+
+        JwtDTO response = new JwtDTO(userDetails.getUsername(), jwt, refreshToken, BEARER, menues);
+        loginAttemptService.loginSucceeded(loginFormDTO.login());
+        return Response.ok().setPayload(response).setMessage("Connexion reussi avec succès.");
+    }
 
     private Authentication authenticateUser(LoginFormDTO loginFormDTO) {
         try {
@@ -105,7 +137,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
-      @Override
+    @Override
+    @Transactional
+    public Response<Object> register(RegisterRequest request) {
+        Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findUtilisateurByEmail(request.email());
+        if (optionalUtilisateur.isPresent()) {
+            return Response.exception().setMessage("Email existe déjà.");
+        }
+        Utilisateur utilisateur = new Utilisateur();
+        Set<Profile> profiles = new HashSet<>();
+        profiles.add(profilRepository.findByCode(ProfileEnum.USER.name()).get());
+        utilisateur.setProfiles(profiles);
+        utilisateur.setEmail(request.email());
+        utilisateur.setPassword(encoder.encode(request.password()));
+        utilisateur.setNom(request.nom());
+        utilisateur.setPrenom(request.prenom());
+        utilisateurRepository.save(utilisateur);
+        notificationService.sendOtpCodeToRegisteredUser(utilisateur.getEmail());
+        return Response.ok().setMessage("Inscription effectuée avec succès.");
+    }
+
+    @Override
       @Transactional
       public ResponseEntity<APIResponse> authenticateUserWithFirstUrlConnexion(InitialAuthenticationDTO formRequest) {
         if (isValidPassword(formRequest.newPassword())) {
@@ -270,15 +322,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return newPassword;
     }
-  /*  private String getNewPassword(Object form) {
-        if (form instanceof InitialAuthenticationDTO) {
-
-            return ((InitialAuthenticationDTO) form).newPassword();
-        } else if (form instanceof ForgetFormDTO) {
-            return ((ForgetFormDTO) form).newPassword();
-        }
-        return null;
-    }
-
-   */
 }

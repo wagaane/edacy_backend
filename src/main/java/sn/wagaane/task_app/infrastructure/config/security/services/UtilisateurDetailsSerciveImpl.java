@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sn.wagaane.task_app.domain.model.utilisateur.Utilisateur;
-import sn.wagaane.task_app.domain.repository.utilisateur.UtilisateurRepository;
+import sn.wagaane.task_app.domain.repository.IUtilisateurRepository;
 import sn.wagaane.task_app.infrastructure.config.utils.i18n.I18nTranslate;
 
 import static sn.wagaane.task_app.infrastructure.config.utils.i18n.I18nKeys.CONNEXION_LOGIN_TENTATIVE;
@@ -19,8 +19,7 @@ import static sn.wagaane.task_app.infrastructure.config.utils.i18n.I18nKeys.UTIL
 @Service
 @RequiredArgsConstructor
 public class UtilisateurDetailsSerciveImpl implements UserDetailsService {
-
-    private final UtilisateurRepository utilisateurRepository;
+    private final IUtilisateurRepository utilisateurRepository;
     private final LoginAttemptService loginAttemptService;
     private final I18nTranslate i18nTranslat;
 
@@ -30,8 +29,7 @@ public class UtilisateurDetailsSerciveImpl implements UserDetailsService {
         if (loginAttemptService.isBlocked(username)) {
             throw new InternalAuthenticationServiceException(i18nTranslat.toTranslate(CONNEXION_LOGIN_TENTATIVE));
         }
-        Utilisateur utilisateur = utilisateurRepository.findUtilisateurByEmail(username).orElseThrow((() -> new UsernameNotFoundException(i18nTranslat.toTranslate(UTILISATEUR_ABSENT) + " : " + username)));
+        Utilisateur utilisateur = utilisateurRepository.findByEmailAndDeletedFalse(username).orElseThrow((() -> new UsernameNotFoundException(i18nTranslat.toTranslate(UTILISATEUR_ABSENT) + " : " + username)));
         return UtilisateurPrinciple.build(utilisateur);
     }
-
 }

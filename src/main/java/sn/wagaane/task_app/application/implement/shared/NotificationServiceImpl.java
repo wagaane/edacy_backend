@@ -1,10 +1,11 @@
-package sn.wagaane.task_app.application.services.implement.shared;
+package sn.wagaane.task_app.application.implement.shared;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import sn.wagaane.task_app.application.services.implement.shared.file.INotificationService;
+import sn.wagaane.task_app.application.implement.shared.file.INotificationService;
+import sn.wagaane.task_app.application.services.otp.OtpService;
 import sn.wagaane.task_app.domain.model.utilisateur.Utilisateur;
 import sn.wagaane.task_app.domain.model.utilisateur.ValidationUser;
 import sn.wagaane.task_app.infrastructure.config.security.jwt.JwtProvider;
@@ -30,6 +31,7 @@ public class NotificationServiceImpl implements INotificationService {
     private final JwtProvider jwtProvider;
     private final MailService mailService;
     private static final String SUIVI_PERMUTATION = "Suivi demande de permutation";
+    private final OtpService otpService;
 
     @Value("${app.url.front}")
     private String appUrlFront;
@@ -100,11 +102,21 @@ public class NotificationServiceImpl implements INotificationService {
     }
 
     @Override
+    @Transactional
+    public void sendOtpCodeToRegisteredUser(String email) {
+        String codeOtp = otpService.generateOtp(email);
+
+        String textMessage = """
+                Bonjour votre code de validation est %s.
+                """.formatted(codeOtp);
+        MailInfosDTO mailInfosDTO = new MailInfosDTO(null, textMessage, "Validation compte", null, email);
+        sendEmail(mailInfosDTO);
+    }
+
+    @Override
     public void sendEmail(MailInfosDTO mailInfosDTO) {
         System.out.println("### send mail fonction");
         MailInfosDTO mailInfos = new MailInfosDTO(mailInfosDTO.id(), mailInfosDTO.originalText(), mailInfosDTO.subject(), getHtmlMessage(mailInfosDTO.originalText(), urlLogoStarterKit,NOM_ORGANISATION), mailInfosDTO.destinataire());
-
-
         mailService.sendMail(mailInfos);
     }
 
