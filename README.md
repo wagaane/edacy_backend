@@ -1,7 +1,7 @@
 # task_app
 
 ---
-### Backend
+### Backend (Spring boot)
 - API REST simple (GET, POST, PUT, DELETE)
 - Réponses JSON
 - CORS activé pour le mobile
